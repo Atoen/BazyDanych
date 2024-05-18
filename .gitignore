@@ -1,0 +1,4 @@
+/BazyDanych/bin/
+/BazyDanych/obj/
+**/appsettings.Development.json
+**/appsettings.json
