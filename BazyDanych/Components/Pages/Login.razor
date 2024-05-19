@@ -9,7 +9,7 @@
     <div class="menu">
         <div class="title">Zarządzanie barem kinowym</div>
         <div class="form">
-            <StatusMessage Message="@_errorMessage" />
+            <StatusMessage Data="@_statusMessageData" />
             <EditForm Model="Credentials" OnValidSubmit="FormCallback" FormName="login">
                 <DataAnnotationsValidator />
                 
@@ -23,7 +23,7 @@
                 <ValidationSummary />
                 
                 <p>
-                    <button class="btn btn-primary">Log in</button>
+                    <Button Color="ButtonColor.Primary" Type="ButtonType.Submit">Zaloguj się</Button>
                 </p>
                 
             </EditForm>
@@ -36,7 +36,7 @@
 @inject ILogger<Login> Logger
 
 @code {
-    private string? _errorMessage;
+    private StatusMessageData? _statusMessageData;
     
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
@@ -54,7 +54,7 @@
         }
         else
         {
-            _errorMessage = "Error: Invalid login attempt.";
+            _statusMessageData = new StatusMessageData("Błędne dane logowania.", StatusMessageType.Error);
         }
     }
 }

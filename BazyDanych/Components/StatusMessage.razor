@@ -1,12 +1,13 @@
-@if (!string.IsNullOrEmpty(Message))
+@using BazyDanych.Data.Models
+@if (Data is { IsNullOrEmpty: false })
 {
-    var statusMessageClass = Message.StartsWith("Error") ? "danger" : "success";
+    var statusMessageClass = Data.Type == StatusMessageType.Error ? "danger" : "success";
     <div class="alert alert-@statusMessageClass" role="alert">
-        @Message
+        @Data
     </div>
 }
 
 @code {
     [Parameter]
-    public string? Message { get; set; }
+    public StatusMessageData? Data { get; set; }
 }
