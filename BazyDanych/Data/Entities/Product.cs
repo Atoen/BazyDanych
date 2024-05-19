@@ -10,7 +10,7 @@ public class Product
 
     [Column("cena")] public decimal Price { get; set; }
 
-    [Column("popularnosc")] public double Popularity { get; set; }
+    [Column("popularnosc")] public float Popularity { get; set; }
 
     [Column("dostepna_ilosc")] public int AvailableQuantity { get; set; }
 

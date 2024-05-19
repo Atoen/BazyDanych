@@ -1,23 +1,18 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="main">
+
+    <div class="bb-top-row px-4 d-flex justify-content-end">
+        <TopBar />
     </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    
+    <div class="content px-4">
+        @Body
+    </div>
 </div>
 
 <div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
+    Wystąpił nieoczekiwany błąd.
+    <a href="" class="reload">Przeładuj stronę</a>
     <a class="dismiss">🗙</a>
 </div>

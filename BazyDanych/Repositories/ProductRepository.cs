@@ -15,13 +15,48 @@ public class ProductRepository
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
-        var query = """
-                    SELECT * FROM "Produkt"
-                    """;
+        const string query = """
+                             SELECT cena, popularnosc, dostepna_ilosc, nazwa, jednostka, kategoria FROM "Produkt"
+                             """;
 
-        using var connection = _context.CreateConnection();
-        var products = await connection.QueryAsync<Product>(query);
+        using var connection = _context.CreateRootConnection();
+        return await connection.QueryAsync<Product>(query);
+    }
 
-        return products;
+    public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
+    {
+        const string query = """
+                             SELECT cena, popularnosc, dostepna_ilosc, nazwa, jednostka, kategoria
+                             FROM "Produkt" 
+                             WHERE LOWER(nazwa) LIKE '%' || LOWER(@Name) || '%'
+                             """;
+        using var connection = _context.CreateRootConnection();
+        return await connection.QueryAsync<Product>(query, new { name });
+    }
+
+    public async Task CreateProduct(Product product)
+    {
+        const string query = """
+                                INSERT INTO "Produkt"(
+                                     cena,
+                                     popularnosc,
+                                     dostepna_ilosc,
+                                     nazwa,
+                                     jednostka,
+                                     kategoria
+                                 )
+                                 VALUES
+                                 (
+                                     @Price,
+                                     @Popularity,
+                                     @AvailableQuantity,
+                                     @Name,
+                                     @Unit,
+                                     @Category
+                                 )
+                             """;
+
+        using var connection = _context.CreateRootConnection();
+        await connection.ExecuteAsync(query, product);
     }
 }

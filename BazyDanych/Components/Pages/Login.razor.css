@@ -1,0 +1,84 @@
+.loading {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.background {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+}
+
+.menu * {
+    color: whitesmoke;
+    border: none;
+    font-family: Verdana, sans-serif;
+}
+
+.title {
+    margin-bottom: 10px;
+    color: black;
+}
+
+button {
+    border: none;
+    margin: 5px 10px 0;
+    width: 100px;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    position: relative;
+}
+
+.working {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: #303030;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-loader {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    animation: f1 1s infinite, f2 2s linear infinite;
+}
+
+input {
+    color: whitesmoke;
+    border: none;
+    font-family: Verdana, sans-serif;
+    border-radius: 5px;
+    width: 100%;
+    background: #323232;
+    padding: 5px;
+    margin: 3px 2px 0 2px;
+}
+
+input:focus {
+    outline: none;
+}
+
+::-ms-reveal {
+    filter: invert(100%);
+}

@@ -1,0 +1,43 @@
+@using System.Globalization
+@using BazyDanych.Services
+
+@implements IDisposable
+
+<div class="body">
+    <div class="employee-name">Zalogowano jako: @UserService.Employee?.FullName</div>
+    <div class="employee-permissions">Uprawnienia: @UserService.Employee?.Position.Permissions</div>
+    <div class="date">@_time</div>
+</div>
+
+@inject UserService UserService
+@inject ILogger<TopBar> Logger
+
+@code {
+
+    private string _time = DateTime.Now.ToString("dd MMMM yyyy HH:mm:ss", CultureInfo.CurrentUICulture);
+    private PeriodicTimer _timer = new(TimeSpan.FromSeconds(1));
+
+    protected override void OnInitialized()
+    {
+        if (UserService.Employee is null)
+        {
+            Logger.LogWarning("User is not authenticated");
+        }
+        
+        _ = UpdateTimeAsync();
+    }
+
+    private async Task UpdateTimeAsync()
+    {
+        while (await _timer.WaitForNextTickAsync())
+        {
+            _time = DateTime.Now.ToString("dd MMMM yyyy HH:mm:ss", CultureInfo.CurrentUICulture);
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        _timer.Dispose();
+    }
+}

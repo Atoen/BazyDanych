@@ -1,0 +1,60 @@
+@page "/Login"
+@using BazyDanych.Components.Layout
+@using BazyDanych.Data.Models
+@using BazyDanych.Services
+
+@layout EmptyLayout
+
+<div class="background">
+    <div class="menu">
+        <div class="title">Zarządzanie barem kinowym</div>
+        <div class="form">
+            <StatusMessage Message="@_errorMessage" />
+            <EditForm Model="Credentials" OnValidSubmit="FormCallback" FormName="login">
+                <DataAnnotationsValidator />
+                
+                <p>
+                    <InputText @bind-Value="Credentials.Username" placeholder="Username" />
+                </p>
+                <p>
+                    <InputText @bind-Value="Credentials.Password" placeholder="Password" type="password" />
+                </p>
+                
+                <ValidationSummary />
+                
+                <p>
+                    <button class="btn btn-primary">Log in</button>
+                </p>
+                
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@inject UserService UserService
+@inject RedirectManager RedirectManager
+@inject ILogger<Login> Logger
+
+@code {
+    private string? _errorMessage;
+    
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromForm]
+    private UserCredentials Credentials { get; set; } = new();
+    
+    private async Task FormCallback()
+    {
+        var result = await UserService.LoginAsync(Credentials);
+        if (result.Succeeded)
+        {
+            Logger.LogInformation("User logged in");
+            RedirectManager.RedirectTo(ReturnUrl);
+        }
+        else
+        {
+            _errorMessage = "Error: Invalid login attempt.";
+        }
+    }
+}
