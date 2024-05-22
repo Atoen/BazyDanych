@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BazyDanych.Services;
 
-public class RedirectManager(NavigationManager navigationManager)
+public class RedirectManager(NavigationManager navigationManager, IJSRuntime jsRuntime)
 {
     public void RedirectTo(string? uri)
     {
@@ -18,6 +19,16 @@ public class RedirectManager(NavigationManager navigationManager)
 
     public void RedirectToLogin()
     {
-        navigationManager.NavigateTo("/Login", forceLoad: true);
+        navigationManager.NavigateTo("/Login", true);
+    }
+    
+    public void RedirectToRoot()
+    {
+        navigationManager.NavigateTo("/");
+    }
+
+    public Task GoBackAsync()
+    {
+        return jsRuntime.InvokeVoidAsync("history.back").AsTask();
     }
 }

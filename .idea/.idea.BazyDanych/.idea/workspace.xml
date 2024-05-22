@@ -9,10 +9,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa332b26-b643-473c-815e-8cb0e44a57c4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/StatusMessageData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/AddProductModal.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/EditProductModal.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/MenuButton.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Account.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Account.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/ChangePassword.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/ChangePassword.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Unauthorized.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/RedirectToUnauthorized.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/RequireLoggedIn.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/MenuOption.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Services/MenuOptionsProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Home.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Routes.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Components/StatusMessage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/StatusMessage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/UserCredentials.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/UserCredentials.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/TopBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/TopBar.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Resutls/LoginResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Resutls/LoginResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/UserService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,21 +71,45 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Authorization/src/AuthenticationState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Authorization/src/AuthorizeRouteView.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Components/src/ComponentBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Components/src/EventCallbackOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Components/src/NavigationManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Components/src/ParameterAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Components/src/Rendering/ComponentState.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Forms/src/EditContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Server/src/Circuits/RemoteNavigationManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Components/Web/src/Forms/EditForm.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Core/src/IdentityBuilderExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Core/src/IdentityConstants.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Core/src/SignInManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Extensions.Core/src/IdentityBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Extensions.Core/src/IdentityServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Extensions.Core/src/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Servers/Kestrel/Core/src/Internal/Http/HttpProtocol.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Linq/src/System/Linq/Concat.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/StringSyntaxAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Threading/PeriodicTimer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Future.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/ValueTask.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/Microsoft.Extensions.Configuration.Abstractions/src/ConfigurationExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/27/a42e0624/ButtonType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/51/a438d0d7/Button.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/7e/b8bfc5cd/CurrencyInput`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/b2/183f146a/Icon.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/c2/493d84c4/IconSize.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/eb/dbf75267/IconName.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/f6/1db838fb/BootstrapIconProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/ba/a6bf0345/CommandType.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dd2c5c41c8b0466a90971b5dfb320b946d8a0/27/5a78fc9b/IUserStore`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fba9afd29efa49229d2dd911da0bdfedc8e910/bb/1af61a01/VoidTaskResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2373546ed22296985948c41cd3467cce7432b9af70eb51b096eb185664af352f/NpgsqlConnection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c3b67f71a9dcbfb95446180e0efd3db74bed10e42fefbbfd7e2cce893b55/SqlMapper.Async.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BazyDanych/wwwroot/bootstrap/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -85,18 +135,22 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Artur/source/repos/BazyDanych/BazyDanych",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "database.query.execution",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
       "postgresql"
+    ],
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "PostgreSQL"
     ],
     "rider.external.source.directories": [
       "C:\\Users\\Artur\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
@@ -153,6 +207,12 @@
       <workItem from="1716063019187" duration="3702000" />
       <workItem from="1716070387906" duration="2320000" />
       <workItem from="1716122624674" duration="7707000" />
+      <workItem from="1716136893846" duration="3542000" />
+      <workItem from="1716142766394" duration="986000" />
+      <workItem from="1716155366247" duration="3423000" />
+      <workItem from="1716210107454" duration="6581000" />
+      <workItem from="1716388879159" duration="283000" />
+      <workItem from="1716389180472" duration="9692000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -170,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716129785376</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="MessageStatus">
+      <option name="closed" value="true" />
+      <created>1716138192515</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716138192515</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,6 +250,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Logging in + top bar displaying employe info" />
-    <option name="LAST_COMMIT_MESSAGE" value="Logging in + top bar displaying employe info" />
+    <MESSAGE value="MessageStatus" />
+    <option name="LAST_COMMIT_MESSAGE" value="MessageStatus" />
   </component>
 </project>

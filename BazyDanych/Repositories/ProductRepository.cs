@@ -16,7 +16,7 @@ public class ProductRepository
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
         const string query = """
-                             SELECT cena, popularnosc, dostepna_ilosc, nazwa, jednostka, kategoria FROM "Produkt"
+                             SELECT * FROM "Produkt"
                              """;
 
         using var connection = _context.CreateRootConnection();
@@ -26,37 +26,70 @@ public class ProductRepository
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
         const string query = """
-                             SELECT cena, popularnosc, dostepna_ilosc, nazwa, jednostka, kategoria
+                             SELECT *
                              FROM "Produkt" 
                              WHERE LOWER(nazwa) LIKE '%' || LOWER(@Name) || '%'
                              """;
         using var connection = _context.CreateRootConnection();
         return await connection.QueryAsync<Product>(query, new { name });
     }
-
-    public async Task CreateProduct(Product product)
+    
+    public async Task ModifyProductAsync(Product product)
     {
         const string query = """
-                                INSERT INTO "Produkt"(
-                                     cena,
-                                     popularnosc,
-                                     dostepna_ilosc,
-                                     nazwa,
-                                     jednostka,
-                                     kategoria
-                                 )
-                                 VALUES
-                                 (
-                                     @Price,
-                                     @Popularity,
-                                     @AvailableQuantity,
-                                     @Name,
-                                     @Unit,
-                                     @Category
-                                 )
+                                UPDATE "Produkt"
+                                SET
+                                    cena = @Price,
+                                    popularnosc = @Popularity,
+                                    dostepna_ilosc = @AvailableQuantity,
+                                    nazwa = @Name,
+                                    jednostka = @Unit,
+                                    kategoria = @Category
+                                WHERE
+                                    id_produktu = @Id
                              """;
 
         using var connection = _context.CreateRootConnection();
         await connection.ExecuteAsync(query, product);
+    }
+    
+    public async Task<int> CreateProductAsync(Product product)
+    {
+        const string query = """
+                            INSERT INTO "Produkt"(
+                                cena,
+                                popularnosc,
+                                dostepna_ilosc,
+                                nazwa,
+                                jednostka,
+                                kategoria
+                            )
+                            VALUES
+                            (
+                                @Price,
+                                @Popularity,
+                                @AvailableQuantity,
+                                @Name,
+                                @Unit,
+                                @Category
+                            )
+                            RETURNING "id_produktu"
+                            """;
+
+        using var connection = _context.CreateRootConnection();
+        var productId = await connection.ExecuteScalarAsync<int>(query, product);
+
+        return productId;
+    }
+    
+    public async Task DeleteProductAsync(int productId)
+    {
+        const string query = """
+                                DELETE FROM "Produkt"
+                                WHERE id_produktu = @Id
+                             """;
+
+        using var connection = _context.CreateRootConnection();
+        await connection.ExecuteAsync(query, new { Id = productId });
     }
 }

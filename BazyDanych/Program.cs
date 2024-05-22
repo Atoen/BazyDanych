@@ -2,7 +2,6 @@ using BazyDanych.Components;
 using BazyDanych.Data;
 using BazyDanych.Repositories;
 using BazyDanych.Services;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +15,8 @@ builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<EmployeeRepository>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<MenuOptionsProvider>();
 builder.Services.AddScoped<RedirectManager>();
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-}).AddIdentityCookies();
 
 var app = builder.Build();
 

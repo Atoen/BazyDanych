@@ -1,0 +1,14 @@
+@page "/Unauthorized"
+@using BazyDanych.Services
+
+<PageTitle>Odmowa dostępu</PageTitle>
+
+<h3>Odmowa dostępu</h3>
+
+<Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+
+@inject RedirectManager RedirectManager
+
+@code {
+    void GoBack() => RedirectManager.RedirectToRoot();
+}

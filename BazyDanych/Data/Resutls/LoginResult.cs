@@ -8,5 +8,5 @@ public class LoginResult
 
     public static LoginResult Failed { get; } = new();
     
-    public override string ToString() => Succeeded ? "Succeeded" : "Failed";
+    public override string ToString() => Succeeded ? nameof(Success) : nameof(Failed);
 }

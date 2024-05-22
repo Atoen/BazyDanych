@@ -1,31 +1,47 @@
 @page "/"
 
 @using BazyDanych.Components.Layout
+@using BazyDanych.Data.Models
 @using BazyDanych.Services
 @layout MainLayout
 
 <h3>Turbo bar</h3>
 
-<div class="menu">
-    <Button Color="ButtonColor.Primary" Size="Size.Large">Edytuj menu</Button>
-    <Button Color="ButtonColor.Primary" Size="Size.Large">Zamówienia i stan magazynu</Button>
-    <Button Color="ButtonColor.Primary" Size="Size.Large">Zarządzaj pracownikami</Button>
-    <Button Color="ButtonColor.Primary" Size="Size.Large">Ustawienia konta</Button>
-    <Button Color="ButtonColor.Primary" Size="Size.Large">Raporty</Button>
-    <Button Color="ButtonColor.Danger" Size="Size.Large" @onclick="Logout">Wyloguj się</Button>
-</div>
+<RequireLoggedIn />
 
-@if (!UserService.IsAuthenticated)
+@if (_options is not null)
 {
-    <RedirectToLogin />
+    <div class="menu">
+        @foreach (var option in _options)
+        {
+            <MenuButton OptionData="option"/>
+        }
+        
+        @if (_options.Count % 2 != 0)
+        {
+            <div style="visibility: hidden">
+                <MenuButton OptionData="MenuOption.Empty"/>
+            </div>
+        }
+        
+        <Button Color="ButtonColor.Secondary" Size="Size.Large" @onclick="ManageAccount">Ustawienia konta</Button>
+        <Button Color="ButtonColor.Danger" Size="Size.Large" @onclick="Logout">Wyloguj się</Button>
+    </div>
 }
 
 @inject UserService UserService
-@inject IJSRuntime JSRuntime
+@inject RedirectManager RedirectManager
+@inject MenuOptionsProvider OptionsProvider
 
 @code {
-    private void Logout()
+    private void ManageAccount() => RedirectManager.RedirectTo("/Account");
+
+    private void Logout() => UserService.Logout();
+
+    private List<MenuOption>? _options;
+
+    protected override void OnInitialized()
     {
-        UserService.Logout();
+        _options = OptionsProvider.GetOptions().ToList();
     }
 }

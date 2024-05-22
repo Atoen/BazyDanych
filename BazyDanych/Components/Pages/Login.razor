@@ -14,10 +14,10 @@
                 <DataAnnotationsValidator />
                 
                 <p>
-                    <InputText @bind-Value="Credentials.Username" placeholder="Username" />
+                    <InputText @bind-Value="Credentials.Username" placeholder="Login" class="form-control" />
                 </p>
                 <p>
-                    <InputText @bind-Value="Credentials.Password" placeholder="Password" type="password" />
+                    <InputText @bind-Value="Credentials.Password" placeholder="Hasło" type="password" class="form-control" />
                 </p>
                 
                 <ValidationSummary />
@@ -57,4 +57,13 @@
             _statusMessageData = new StatusMessageData("Błędne dane logowania.", StatusMessageType.Error);
         }
     }
+
+    protected override void OnInitialized()
+    {
+        if (UserService.IsAuthenticated)
+        {
+            UserService.Logout();
+        }
+    }
+
 }

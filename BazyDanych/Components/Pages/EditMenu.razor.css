@@ -1,0 +1,17 @@
+.products-table tbody tr:hover td {
+    background-color: #e8e8e8;
+}
+
+.container {
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.delete-icon {
+    visibility: hidden;
+}
+
+.products-table tbody tr:hover .delete-icon  {
+    visibility: visible;
+}

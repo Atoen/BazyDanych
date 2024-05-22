@@ -3,6 +3,8 @@
 @using BazyDanych.Data.Entities
 @using BazyDanych.Repositories
 
+<RequireLoggedIn />
+
 <h3>Products</h3>
 
 <Button @onclick="OnCreateProduct" Color="ButtonColor.Primary">Add product</Button>
@@ -72,7 +74,7 @@ else
             Unit = "KiloTona"
         };
 
-        await Repository.CreateProduct(product);
+        await Repository.CreateProductAsync(product);
     }
 
 }

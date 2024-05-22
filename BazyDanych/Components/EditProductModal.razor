@@ -1,0 +1,123 @@
+@using BazyDanych.Data.Entities
+@using BazyDanych.Data.Models
+
+<StatusMessage Data="_statusMessageData"/>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-2">
+        <label for="productName" class="form-label">Nazwa</label>
+    </div>
+    <div class="col-md-10">
+        <InputText id="productName" @bind-Value="_newName" Placeholder="Wprowadź nazwę produktu" class="form-control" />
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-2">
+        <label for="productCategory" class="form-label">Kategoria</label>
+    </div>
+    <div class="col-md-10">
+        <InputText id="productCategory" @bind-Value="_newCategory" Placeholder="Wprowadź kategorię produktu" class="form-control" />
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-2">
+        <label for="productUnit" class="form-label">Jednostka</label>
+    </div>
+    <div class="col-md-10">
+        <InputText id="productUnit" @bind-Value="_newUnit" Placeholder="Wprowadź jednostkę produktu" class="form-control" />
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-2">
+        <label for="productPrice" class="form-label">Cena</label>
+    </div>
+    <div class="col-md-10">
+        <CurrencyInput id="productPrice" TValue="decimal" @bind-Value="_newPrice" AllowNegativeNumbers="false"
+                       MinimumIntegerDigits="1" MinimumFractionDigits="2" MaximumFractionDigits="2"
+                       Placeholder="Wprowadź nową cenę produktu" Locale="pl-pl" class="form-control" />
+    </div>
+</div>
+
+<div class="mt-2 float-end">
+    <Button Color="ButtonColor.Primary" @onclick="CancelCallback">Anuluj</Button>
+    <Button Color="ButtonColor.Success" @onclick="ModifyProduct">Zapisz modyfikacje</Button>
+</div>
+
+@inject ILogger<EditProductModal> Logger
+
+@code {
+    [Parameter, EditorRequired] public EventCallback CancelCallback { get; set; }
+    [Parameter, EditorRequired] public EventCallback<Product> ModifyProductCallback { get; set; }
+    [Parameter, EditorRequired] public Product ModifiedProduct { get; set; } = default!;
+
+    private StatusMessageData? _statusMessageData;
+    
+    private decimal _newPrice;
+    private string _newName = default!;
+    private string _newUnit = default!;
+    private string _newCategory = default!;
+    
+    protected override void OnParametersSet()
+    {
+        _statusMessageData = null;
+        
+        _newPrice = ModifiedProduct.Price;
+        _newName = ModifiedProduct.Name;
+        _newUnit = ModifiedProduct.Unit;
+        _newCategory = ModifiedProduct.Category;
+    }
+
+    private Task ModifyProduct()
+    {
+        if (!ValidateModification())
+        {
+            return Task.CompletedTask;
+        }
+
+        var result = new Product
+        {
+            Price = _newPrice,
+            Name = _newName,
+            Unit = _newUnit,
+            Category = _newCategory,
+            Id = ModifiedProduct.Id,
+            Popularity = ModifiedProduct.Popularity,
+            AvailableQuantity = ModifiedProduct.AvailableQuantity
+        };
+
+        return ModifyProductCallback.InvokeAsync(result);
+    }
+    
+    private bool ValidateModification()
+    {
+        _statusMessageData = null;
+        
+        var invalidProperties = string.IsNullOrEmpty(_newName) || 
+                               string.IsNullOrEmpty(_newCategory) || 
+                               string.IsNullOrEmpty(_newUnit) ||
+                               _newPrice <= 0;
+
+        var nothingChanged = _newName == ModifiedProduct.Name &&
+                             _newCategory == ModifiedProduct.Category &&
+                             _newUnit == ModifiedProduct.Unit &&
+                             _newPrice == ModifiedProduct.Price;
+        
+
+        if (invalidProperties)
+        {
+            _statusMessageData = new StatusMessageData("Niepoprawne dane produktu", StatusMessageType.Error);
+            return false;
+        }
+
+        if (nothingChanged)
+        {
+            _statusMessageData = new StatusMessageData("Brak wprowadzonych zmian", StatusMessageType.Info);
+            return false;
+        }
+        
+        return true;
+    }
+}

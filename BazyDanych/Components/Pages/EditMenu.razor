@@ -1,0 +1,147 @@
+@page "/EditMenu"
+@using BazyDanych.Data.Entities
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+
+<RequireLoggedIn RequiredPermissions="PermissionsModel.Manager"/>
+
+<PageTitle>Edycja menu</PageTitle>
+
+<Modal @ref="_modal"/>
+<ConfirmDialog @ref="_dialog"/>
+
+<h3>Edycja menu</h3>
+
+@if (_products is null)
+{
+    <p>
+        <em>Loading products...</em>
+    </p>
+}
+else
+{
+    <Button Color="ButtonColor.Success" @onclick="AddProduct">Dodaj produkt</Button>
+
+    <div class="container">
+        <table class="table products-table">
+            <thead>
+            <tr>
+                <th/>
+                <th>Nazwa</th>
+                <th>Kategoria</th>
+                <th>Cena</th>
+                <th>Jednostka</th>
+                <th>Dostępna ilość</th>
+                <th>Popularność</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in _products)
+            {
+                <tr @onclick="() => EditProduct(product)">
+                    <td @onclick="() => DeleteProduct(product)" @onclick:stopPropagation="true">
+                        <div class="delete-icon">
+                            <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
+                        </div>
+                    </td>
+                    <td>@product.Name</td>
+                    <td>@product.Category</td>
+                    <td>@product.Price</td>
+                    <td>@product.Unit</td>
+                    <td>@product.AvailableQuantity</td>
+                    <td>@product.Popularity</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+@inject ProductRepository ProductRepository
+
+@code {
+    private Modal _modal = default!;
+    private Dictionary<string, object> _editModalParameters = default!;
+    private Dictionary<string, object> _createModalParameters = default!;
+
+    private ConfirmDialog _dialog = default!;
+
+    private readonly ConfirmDialogOptions _dialogOptions = new()
+    {
+        YesButtonText = "Tak",
+        YesButtonColor = ButtonColor.Danger,
+        NoButtonText = "Anuluj",
+        NoButtonColor = ButtonColor.Secondary,
+        AutoFocusYesButton = false
+    };
+
+    private IEnumerable<Product>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editModalParameters = new Dictionary<string, object>
+        {
+            { nameof(EditProductModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
+            { nameof(EditProductModal.ModifyProductCallback), EventCallback.Factory.Create<Product>(this, ProductModified) }
+        };
+        
+        _createModalParameters = new Dictionary<string, object>
+        {
+            { nameof(EditProductModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
+            { nameof(AddProductModal.CreateProductCallback), EventCallback.Factory.Create<Product>(this, ProductAdded) }
+        };
+
+        var products = await ProductRepository.GetProductsAsync();
+        _products = products.OrderBy(x => x.Id);
+    }
+
+    private Task EditProduct(Product product)
+    {
+        _editModalParameters[nameof(EditProductModal.ModifiedProduct)] = product;
+        return _modal.ShowAsync<EditProductModal>("Modyfikuj produkt", parameters: _editModalParameters);
+    }
+
+    private async Task ProductModified(Product product)
+    {
+        await _modal.HideAsync();
+        await ProductRepository.ModifyProductAsync(product);
+
+        var modifiedProduct = _products?.FirstOrDefault(x => x.Id == product.Id);
+        if (modifiedProduct is null) return;
+
+        modifiedProduct.Price = product.Price;
+        modifiedProduct.Name = product.Name;
+        modifiedProduct.Unit = product.Unit;
+        modifiedProduct.Category = product.Category;
+    }
+
+    private Task CloseModal() => _modal.HideAsync();
+
+    private async Task DeleteProduct(Product productTodelete)
+    {
+        var confirmation = await _dialog.ShowAsync(
+            title: "Usuń produkt",
+            message1: $"Usunięcie produktu {productTodelete.Name} z menu jest nieodwracalne.",
+            message2: "Czy na pewno chcesz kontuuować?",
+            confirmDialogOptions: _dialogOptions);
+
+        if (!confirmation) return;
+
+        await ProductRepository.DeleteProductAsync(productTodelete.Id);
+        _products = _products?.Where(x => x.Id != productTodelete.Id);
+    }
+
+    private Task AddProduct()
+    {
+        return _modal.ShowAsync<AddProductModal>("Dodaj nowy produkt", parameters: _createModalParameters);
+    }
+
+    private async Task ProductAdded(Product productToAdd)
+    {
+        await _modal.HideAsync();
+        var productId = await ProductRepository.CreateProductAsync(productToAdd);
+        productToAdd.Id = productId;
+        
+        _products = _products?.Concat([productToAdd]);
+    }
+}

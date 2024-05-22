@@ -1,0 +1,17 @@
+@using BazyDanych.Data.Models
+@using BazyDanych.Services
+
+@if (!UserService.IsAuthenticated)
+{
+    <RedirectToLogin />
+}
+else if (RequiredPermissions is not null && UserService.EmployeePermissions != RequiredPermissions)
+{
+    <RedirectToUnauthorized />
+}
+
+@inject UserService UserService
+
+@code {
+    [Parameter] public PermissionsModel? RequiredPermissions { get; set; }
+}

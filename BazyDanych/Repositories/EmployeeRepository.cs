@@ -1,5 +1,5 @@
+using System.Data;
 using BazyDanych.Data;
-using BazyDanych.Data.Entities;
 using BazyDanych.Data.Models;
 using Dapper;
 
@@ -13,18 +13,7 @@ public class EmployeeRepository
     {
         _context = context;
     }
-
-    public async Task<Employee?> VerifyCredentialsAsync(UserCredentials credentials)
-    {
-        const string query = """
-                             SELECT * FROM public."Pracownik" WHERE login = @Username AND haslo = @Password
-                             """;
-
-        using var connection = _context.CreateRootConnection();
-        
-        return await connection.QueryFirstOrDefaultAsync<Employee>(query, credentials);
-    }
-
+    
     public async Task<EmployeeModel?> GetEmployeeModelAsync(UserCredentials credentials)
     {
         const string query = """
@@ -32,6 +21,8 @@ public class EmployeeRepository
                                      e.imie AS FirstName,
                                      e.drugie_imie AS SecondName,
                                      e.nazwisko AS LastName,
+                                     e.login as Login,
+                                     e.id_pracownika as Id,
                                      p.nazwa AS PositionName,
                                      u.uprawnienia AS Permissions
                                  FROM public."Pracownik" e
@@ -50,8 +41,24 @@ public class EmployeeRepository
 
         var permissions = new PermissionsModel(result.permissions);
         var position = new PositionModel(result.positionname, permissions);
-        var employee = new EmployeeModel(result.firstname, result.secondname, result.lastname, position);
-        
+        var employee = new EmployeeModel(result.id, result.firstname, result.secondname, result.lastname, result.login,
+            position);
+
         return employee;
+    }
+
+    public async Task ChangePasswordAsync(int employeeId, string oldPassword, string newPassword)
+    {
+        const string procedure = "zmiana_hasla";
+
+        using var connection = _context.CreateRootConnection();
+        var parameters = new
+        {
+            id_temp = employeeId,
+            stare_haslo = oldPassword,
+            nowe_haslo = newPassword
+        };
+
+        await connection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
     }
 }

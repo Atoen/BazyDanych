@@ -11,6 +11,7 @@ public class UserService
     public bool IsAuthenticated { get; private set; }
     
     public EmployeeModel? Employee { get; private set; }
+    public PermissionsModel? EmployeePermissions => Employee?.Position.Permissions;
 
     private UserCredentials? _credentials;
     

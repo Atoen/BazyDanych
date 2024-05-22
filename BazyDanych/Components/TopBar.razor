@@ -10,7 +10,6 @@
 </div>
 
 @inject UserService UserService
-@inject ILogger<TopBar> Logger
 
 @code {
 
@@ -19,12 +18,10 @@
 
     protected override void OnInitialized()
     {
-        if (UserService.Employee is null)
+        if (UserService.Employee is not null)
         {
-            Logger.LogWarning("User is not authenticated");
+            _ = UpdateTimeAsync();
         }
-        
-        _ = UpdateTimeAsync();
     }
 
     private async Task UpdateTimeAsync()

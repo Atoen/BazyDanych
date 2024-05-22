@@ -1,0 +1,54 @@
+@page "/Account"
+@using BazyDanych.Data.Models
+@using BazyDanych.Services
+<h3>Konto</h3>
+
+<RequireLoggedIn />
+
+@if (_model is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <p>
+            <strong>Imię:</strong> @_model.FirstName
+        </p>
+        <p>
+            <strong>Drugie imię:</strong> @_model.SecondName
+        </p>
+        <p>
+            <strong>Nazwisko:</strong> @_model.LastName
+        </p>
+        <p>
+            <strong>Login:</strong> @_model.Login
+        </p>
+        <p>
+            <strong>Stanowisko:</strong> @_model.Position.Name
+        </p>
+    </div>
+
+<div class="form-group">
+    <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+    <Button Color="ButtonColor.Danger" @onclick="RedirectToChangePassword">Zmień hasło</Button>
+</div>
+    
+}
+
+@inject UserService UserService
+@inject RedirectManager RedirectManager
+
+@code {
+
+    private EmployeeModel? _model;
+
+    protected override void OnInitialized()
+    {
+        _model = UserService.Employee;
+    }
+
+    private void RedirectToChangePassword() => RedirectManager.RedirectTo("/Account/ChangePassword");
+    
+    private void GoBack() => RedirectManager.RedirectTo("/");
+}

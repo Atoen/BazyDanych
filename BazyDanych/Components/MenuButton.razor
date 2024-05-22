@@ -1,0 +1,15 @@
+@using BazyDanych.Data.Models
+@using BazyDanych.Services
+
+<Button Color="OptionData.ButtonColor" Size="Size.Large" @onclick="Navigate">@OptionData.Name</Button>
+
+@inject RedirectManager RedirectManager
+
+@code {
+    [Parameter, EditorRequired] public MenuOption OptionData { get; set; } = default!;
+
+    private void Navigate()
+    {
+        RedirectManager.RedirectTo(OptionData.Route);
+    }
+}

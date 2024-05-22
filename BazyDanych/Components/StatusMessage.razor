@@ -8,6 +8,5 @@
 }
 
 @code {
-    [Parameter]
-    public StatusMessageData? Data { get; set; }
+    [Parameter, EditorRequired] public StatusMessageData? Data { get; set; }
 }
