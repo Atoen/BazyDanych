@@ -11,4 +11,6 @@ public record PermissionsModel(string Permissions)
     public const string ManagerPermission = "kierownik";
     public const string WarehousemanPermission = "magazynier";
     public const string SalesmanPermission = "sprzedawca";
+
+    public static IReadOnlyList<PermissionsModel> AllPermissions { get; } = [Manager, Warehouseman, Salesman];
 }

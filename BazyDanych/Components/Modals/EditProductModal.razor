@@ -46,8 +46,6 @@
     <Button Color="ButtonColor.Success" @onclick="ModifyProduct">Zapisz modyfikacje</Button>
 </div>
 
-@inject ILogger<EditProductModal> Logger
-
 @code {
     [Parameter, EditorRequired] public EventCallback CancelCallback { get; set; }
     [Parameter, EditorRequired] public EventCallback<Product> ModifyProductCallback { get; set; }
@@ -105,7 +103,6 @@
                              _newUnit == ModifiedProduct.Unit &&
                              _newPrice == ModifiedProduct.Price;
         
-
         if (invalidProperties)
         {
             _statusMessageData = new StatusMessageData("Niepoprawne dane produktu", StatusMessageType.Error);

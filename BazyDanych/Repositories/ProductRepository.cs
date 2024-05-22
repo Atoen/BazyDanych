@@ -17,6 +17,7 @@ public class ProductRepository
     {
         const string query = """
                              SELECT * FROM "Produkt"
+                             ORDER BY id_produktu
                              """;
 
         using var connection = _context.CreateRootConnection();

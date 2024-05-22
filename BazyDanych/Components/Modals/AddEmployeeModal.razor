@@ -1,0 +1,135 @@
+@using BazyDanych.Data.Models
+
+<StatusMessage Data="_statusMessageData"/>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeeFirstName" class="form-label">Imię</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeeFirstName" @bind-Value="_newFirstName" Placeholder="Wprowadź imię pracownika" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeeSecondName" class="form-label">Drugie imię</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeeSecondName" @bind-Value="_newSecondName" Placeholder="Wprowadź drugie imię pracownika" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeeLastName" class="form-label">Nazwisko</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeeLastName" @bind-Value="_newLastName" Placeholder="Wprowadź nazwisko pracownika" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeeLogin" class="form-label">Login</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeeLogin" @bind-Value="_newLogin" Placeholder="Wprowadź login pracownika" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeePosition" class="form-label">Stanowisko</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeePosition" @bind-Value="_position" Placeholder="Wprowadź nazwę stanowiska" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeePermission" class="form-label">Uprawnienia</label>
+    </div>
+    <Dropdown id="employeePermission" class="col-md-9">
+        <DropdownToggleButton Color="ButtonColor.Secondary">
+            @(_permissions?.Permissions ?? PermissionPlaceholder)
+        </DropdownToggleButton>
+        <DropdownMenu>
+            @foreach (var permissions in PermissionsModel.AllPermissions)
+            {
+                <DropdownItem Type="ButtonType.Button" @onclick="() => _permissions = permissions">
+                    @permissions.Permissions
+                </DropdownItem>
+            }
+        </DropdownMenu>
+    </Dropdown>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeeSalary" class="form-label">Wynagrodzenie</label>
+    </div>
+    <div class="col-md-9">
+        <CurrencyInput id="employeeSalary" TValue="decimal" @bind-Value="_newSalary" AllowNegativeNumbers="false"
+                       MinimumIntegerDigits="1" MinimumFractionDigits="2" MaximumFractionDigits="2"
+                       Placeholder="Wprowadź wynagrodzenie pracownika" Locale="pl-pl" class="form-control"/>
+    </div>
+</div>
+
+<div class="mt-2 float-end">
+    <Button Color="ButtonColor.Primary" @onclick="CancelCallback">Anuluj</Button>
+    <Button Color="ButtonColor.Success" @onclick="AddEmployee">Dodaj pracownika</Button>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public EventCallback CancelCallback { get; set; }
+    [Parameter, EditorRequired] public EventCallback<EmployeeModel> AddEmployeeCallback { get; set; }
+
+    private StatusMessageData? _statusMessageData;
+
+    private decimal _newSalary;
+    private string _newFirstName = string.Empty;
+    private string? _newSecondName;
+    private string _newLastName = string.Empty;
+    private string _newLogin = string.Empty;
+    private string _position = string.Empty;
+
+    private const string PermissionPlaceholder = "Wybierz uprawnienia";
+    private PermissionsModel? _permissions;
+
+    private Task AddEmployee()
+    {
+        if (!ValidateEmployee())
+        {
+            return Task.CompletedTask;
+        }
+
+        var position = new PositionModel(_position, _permissions!);
+        var newEmployee = new EmployeeModel(0, _newFirstName, _newSecondName, _newLastName, _newLogin, _newSalary, 
+            position);
+
+        return AddEmployeeCallback.InvokeAsync(newEmployee);
+    }
+
+    private bool ValidateEmployee()
+    {
+        _statusMessageData = null;
+
+        var invalidProperties = string.IsNullOrEmpty(_newFirstName) ||
+                                string.IsNullOrEmpty(_newLastName) ||
+                                string.IsNullOrEmpty(_newLogin) ||
+                                _newSalary <= 0 ||
+                                _permissions is null ||
+                                string.IsNullOrEmpty(_position);
+
+        if (invalidProperties)
+        {
+            _statusMessageData = new StatusMessageData("Niepoprawne dane pracownika", StatusMessageType.Error);
+            return false;
+        }
+
+        return true;
+    }
+
+}

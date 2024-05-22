@@ -14,4 +14,30 @@
     <PackageReference Include="OneOf" Version="3.0.271" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Layout\EmptyLayout.razor" />
+    <_ContentIncludedByDefault Remove="Components\Layout\MainLayout.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Account.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\ChangePassword.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\EditMenu.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Home.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Login.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Products.razor" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Unauthorized.razor" />
+    <_ContentIncludedByDefault Remove="Layout\EmptyLayout.razor" />
+    <_ContentIncludedByDefault Remove="Layout\MainLayout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Components\Layout\EmptyLayout.razor" />
+    <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
+    <AdditionalFiles Include="Components\Pages\Account.razor" />
+    <AdditionalFiles Include="Components\Pages\ChangePassword.razor" />
+    <AdditionalFiles Include="Components\Pages\EditMenu.razor" />
+    <AdditionalFiles Include="Components\Pages\Home.razor" />
+    <AdditionalFiles Include="Components\Pages\Login.razor" />
+    <AdditionalFiles Include="Components\Pages\Products.razor" />
+    <AdditionalFiles Include="Components\Pages\Unauthorized.razor" />
+  </ItemGroup>
+
 </Project>

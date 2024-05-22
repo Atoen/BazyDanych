@@ -1,7 +1,9 @@
 @page "/EditMenu"
+@using BazyDanych.Components.Modals
 @using BazyDanych.Data.Entities
 @using BazyDanych.Data.Models
 @using BazyDanych.Repositories
+@using BazyDanych.Services
 
 <RequireLoggedIn RequiredPermissions="PermissionsModel.Manager"/>
 
@@ -15,12 +17,15 @@
 @if (_products is null)
 {
     <p>
-        <em>Loading products...</em>
+        <em>Ładowanie produktów...</em>
     </p>
 }
 else
 {
-    <Button Color="ButtonColor.Success" @onclick="AddProduct">Dodaj produkt</Button>
+    <div class="d-flex" style="gap: 10px">
+        <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+        <Button Color="ButtonColor.Success" @onclick="AddProduct">Dodaj produkt</Button>
+    </div>
 
     <div class="container">
         <table class="table products-table">
@@ -58,6 +63,7 @@ else
 }
 
 @inject ProductRepository ProductRepository
+@inject RedirectManager RedirectManager
 
 @code {
     private Modal _modal = default!;
@@ -65,7 +71,6 @@ else
     private Dictionary<string, object> _createModalParameters = default!;
 
     private ConfirmDialog _dialog = default!;
-
     private readonly ConfirmDialogOptions _dialogOptions = new()
     {
         YesButtonText = "Tak",
@@ -76,6 +81,8 @@ else
     };
 
     private IEnumerable<Product>? _products;
+    
+    private Task CloseModal() => _modal.HideAsync();
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,12 +94,11 @@ else
         
         _createModalParameters = new Dictionary<string, object>
         {
-            { nameof(EditProductModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
+            { nameof(AddProductModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
             { nameof(AddProductModal.CreateProductCallback), EventCallback.Factory.Create<Product>(this, ProductAdded) }
         };
 
-        var products = await ProductRepository.GetProductsAsync();
-        _products = products.OrderBy(x => x.Id);
+        _products = await ProductRepository.GetProductsAsync();
     }
 
     private Task EditProduct(Product product)
@@ -114,21 +120,19 @@ else
         modifiedProduct.Unit = product.Unit;
         modifiedProduct.Category = product.Category;
     }
-
-    private Task CloseModal() => _modal.HideAsync();
-
-    private async Task DeleteProduct(Product productTodelete)
+    
+    private async Task DeleteProduct(Product productToDelete)
     {
         var confirmation = await _dialog.ShowAsync(
             title: "Usuń produkt",
-            message1: $"Usunięcie produktu {productTodelete.Name} z menu jest nieodwracalne.",
-            message2: "Czy na pewno chcesz kontuuować?",
+            message1: $"Usunięcie produktu {productToDelete.Name} z menu jest nieodwracalne.",
+            message2: "Czy na pewno chcesz kontynuować?",
             confirmDialogOptions: _dialogOptions);
 
         if (!confirmation) return;
 
-        await ProductRepository.DeleteProductAsync(productTodelete.Id);
-        _products = _products?.Where(x => x.Id != productTodelete.Id);
+        await ProductRepository.DeleteProductAsync(productToDelete.Id);
+        _products = _products?.Where(x => x.Id != productToDelete.Id);
     }
 
     private Task AddProduct()
@@ -144,4 +148,7 @@ else
         
         _products = _products?.Concat([productToAdd]);
     }
+
+    private void GoBack() => RedirectManager.RedirectTo("/");
+
 }

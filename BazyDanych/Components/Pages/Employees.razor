@@ -1,0 +1,149 @@
+@page "/Employees"
+@using BazyDanych.Components.Modals
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+@using BazyDanych.Services
+
+<RequireLoggedIn RequiredPermissions="PermissionsModel.Manager"/>
+
+<PageTitle>Zarządzanie pracownikami</PageTitle>
+
+<Modal @ref="_modal"/>
+<ConfirmDialog @ref="_dialog"/>
+
+<h3>Zarządzanie pracownikami</h3>
+
+@if (_employees is null)
+{
+<p>
+    <em>Ładowanie pracowników...</em>
+</p>
+}
+else
+{
+    <div class="d-flex" style="gap: 10px">
+        <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+        <Button Color="ButtonColor.Success" @onclick="AddEmployee">Dodaj pracownika</Button>
+    </div>
+    
+    <div class="container">
+        <table class="table employees-table">
+            <thead>
+            <tr>
+                <th/>
+                <th>Imię</th>
+                <th>Drugie imię</th>
+                <th>Nazwisko</th>
+                <th>Login</th>
+                <th>Płaca</th>
+                <th>Stanowisko</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in _employees)
+            {
+                <tr @onclick="() => EditEmployee(employee)">
+                    <td @onclick="() => DeleteEmployee(employee)" @onclick:stopPropagation="true">
+                        <div class="delete-icon">
+                            <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
+                        </div>
+                    </td>
+                    <td>@employee.FirstName</td>
+                    <td>@(employee.SecondName ?? "-")</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Login</td>
+                    <td>@employee.Salary</td>
+                    <td>@employee.Position.Name</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+@inject RedirectManager RedirectManager
+@inject EmployeeRepository EmployeeRepository
+
+@code {
+    private Modal _modal = default!;
+    private Dictionary<string, object> _editModalParameters = default!;
+    private Dictionary<string, object> _createModalParameters = default!;
+
+    private ConfirmDialog _dialog = default!;
+    private readonly ConfirmDialogOptions _dialogOptions = new()
+    {
+        YesButtonText = "Tak",
+        YesButtonColor = ButtonColor.Danger,
+        NoButtonText = "Anuluj",
+        NoButtonColor = ButtonColor.Secondary,
+        AutoFocusYesButton = false
+    };
+    
+    private IEnumerable<EmployeeModel>? _employees;
+    
+    private Task CloseModal() => _modal.HideAsync();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editModalParameters = new Dictionary<string, object>
+        {
+            { nameof(EditEmployeeModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
+            { nameof(EditEmployeeModal.ModifyEmployeeCallback), EventCallback.Factory.Create<EmployeeModel>(this, EmployeeModified) }
+        };
+
+        _createModalParameters = new Dictionary<string, object>
+        {
+            { nameof(AddEmployeeModal.CancelCallback), EventCallback.Factory.Create(this, CloseModal) },
+            { nameof(AddEmployeeModal.AddEmployeeCallback), EventCallback.Factory.Create<EmployeeModel>(this, EmployeeAdded) }
+        };
+        
+        _employees = await EmployeeRepository.GetAllEmployeeModelsAsync();
+    }
+
+    private Task EditEmployee(EmployeeModel employee)
+    {
+        _editModalParameters[nameof(EditEmployeeModal.ModifiedEmployee)] = employee;
+        return _modal.ShowAsync<EditEmployeeModal>("Modyfikuj dane pracownika", parameters: _editModalParameters);
+    }
+
+    private async Task EmployeeModified(EmployeeModel employee)
+    {
+        await _modal.HideAsync();
+
+        var modifiedEmployee = _employees?.FirstOrDefault(x => x.Id == employee.Id);
+        if (modifiedEmployee is null) return;
+
+        modifiedEmployee.Login = employee.Login;
+        modifiedEmployee.Salary = employee.Salary;
+        modifiedEmployee.FirstName = employee.FirstName;
+        modifiedEmployee.SecondName = employee.SecondName;
+        modifiedEmployee.LastName = employee.LastName;
+    }
+
+    private async Task DeleteEmployee(EmployeeModel employee)
+    {
+        var confirmation = await _dialog.ShowAsync(
+            title: "Usuń produkt",
+            message1: $"Usunięcie pracownika {employee.FullName} z bazy danych jest nieodwracalne.",
+            message2: "Czy na pewno chcesz kontynuować?",
+            confirmDialogOptions: _dialogOptions);
+
+        if (!confirmation) return;
+        
+        _employees = _employees?.Where(x => x.Id != employee.Id);
+    }
+
+    private Task AddEmployee()
+    {
+        return _modal.ShowAsync<AddEmployeeModal>("Dodaj nowego pracownika", parameters: _createModalParameters);
+    }
+
+    private async Task EmployeeAdded(EmployeeModel employee)
+    {
+        await _modal.HideAsync();
+
+        _employees = _employees?.Concat([employee]);
+    }
+
+    private void GoBack() => RedirectManager.RedirectTo("/");
+}
