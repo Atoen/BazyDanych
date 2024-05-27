@@ -42,6 +42,44 @@
 
 <div class="row mb-3 align-items-end">
     <div class="col-md-3">
+        <label for="employeeLogin" class="form-label">Hasło</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeePassword" @bind-Value="_newPassword" Placeholder="Wprowadź hasło pracownika" 
+                   class="form-control" type="password" />
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeePosition" class="form-label">Stanowisko</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeePosition" @bind-Value="_newPosition" Placeholder="Wprowadź nazwę stanowiska" class="form-control"/>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="employeePermission" class="form-label">Uprawnienia</label>
+    </div>
+    <Dropdown id="employeePermission" class="col-md-9">
+        <DropdownToggleButton Color="ButtonColor.Secondary">
+            @(_newPermissions.Permissions)
+        </DropdownToggleButton>
+        <DropdownMenu>
+            @foreach (var permissions in PermissionsModel.AllPermissions)
+            {
+            <DropdownItem Type="ButtonType.Button" @onclick="() => _newPermissions = permissions">
+                @permissions.Permissions
+            </DropdownItem>
+            }
+        </DropdownMenu>
+    </Dropdown>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
         <label for="employeeSalary" class="form-label">Wynagrodzenie</label>
     </div>
     <div class="col-md-9">
@@ -68,16 +106,23 @@
     private string? _newSecondName;
     private string _newLastName = default!;
     private string _newLogin = default!;
+    private string _newPassword = default!;
+    private string _newPosition = default!;
+    private PermissionsModel _newPermissions = default!;
     
     protected override void OnParametersSet()
     {
         _statusMessageData = null;
         
-        _newSalary = ModifiedEmployee.Salary;
         _newFirstName = ModifiedEmployee.FirstName;
         _newSecondName = ModifiedEmployee.SecondName;
         _newLastName = ModifiedEmployee.LastName;
         _newLogin = ModifiedEmployee.Login;
+        _newPassword = ModifiedEmployee.Password;
+        
+        _newSalary = ModifiedEmployee.Position.Salary;
+        _newPosition = ModifiedEmployee.Position.Name;
+        _newPermissions = ModifiedEmployee.Position.Permissions;
     }
 
     private Task ModifyEmployee()
@@ -87,8 +132,9 @@
             return Task.CompletedTask;
         }
 
-        var result = new EmployeeModel(ModifiedEmployee.Id, _newFirstName, _newSecondName, _newLastName, _newLogin,
-            _newSalary, ModifiedEmployee.Position);
+        var position = new PositionModel(ModifiedEmployee.Position.Id, _newPosition, _newSalary, _newPermissions);
+        var result = new EmployeeModel(ModifiedEmployee.Id, _newFirstName, _newSecondName, _newLastName, _newLogin, 
+            _newPassword, position);
 
         return ModifyEmployeeCallback.InvokeAsync(result);
     }
@@ -100,13 +146,18 @@
         var invalidProperties = string.IsNullOrEmpty(_newFirstName) || 
                                string.IsNullOrEmpty(_newLastName) || 
                                string.IsNullOrEmpty(_newLogin) ||
+                               string.IsNullOrEmpty(_newPosition) ||
+                               string.IsNullOrEmpty(_newPassword) || 
                                _newSalary <= 0;
 
         var nothingChanged = _newFirstName == ModifiedEmployee.FirstName &&
                              _newSecondName == ModifiedEmployee.SecondName &&
                              _newLastName == ModifiedEmployee.LastName &&
                              _newLogin == ModifiedEmployee.Login &&
-                             _newSalary == ModifiedEmployee.Salary;
+                             _newPermissions == ModifiedEmployee.Position.Permissions &&
+                             _newPosition == ModifiedEmployee.Position.Name &&
+                             _newPassword == ModifiedEmployee.Password &&
+                             _newSalary == ModifiedEmployee.Position.Salary;
         
         if (invalidProperties)
         {

@@ -40,6 +40,16 @@
 
 <div class="row mb-3 align-items-end">
     <div class="col-md-3">
+        <label for="employeeLogin" class="form-label">Hasło</label>
+    </div>
+    <div class="col-md-9">
+        <InputText id="employeePassword" @bind-Value="_newPassword" Placeholder="Wprowadź hasło pracownika"
+                   class="form-control" type="password" />
+    </div>
+</div>
+
+<div class="row mb-3 align-items-end">
+    <div class="col-md-3">
         <label for="employeePosition" class="form-label">Stanowisko</label>
     </div>
     <div class="col-md-9">
@@ -93,6 +103,7 @@
     private string? _newSecondName;
     private string _newLastName = string.Empty;
     private string _newLogin = string.Empty;
+    private string _newPassword = string.Empty;
     private string _position = string.Empty;
 
     private const string PermissionPlaceholder = "Wybierz uprawnienia";
@@ -105,9 +116,8 @@
             return Task.CompletedTask;
         }
 
-        var position = new PositionModel(_position, _permissions!);
-        var newEmployee = new EmployeeModel(0, _newFirstName, _newSecondName, _newLastName, _newLogin, _newSalary, 
-            position);
+        var position = new PositionModel(0, _position, _newSalary, _permissions!);
+        var newEmployee = new EmployeeModel(0, _newFirstName, _newSecondName, _newLastName, _newLogin, _newPassword, position);
 
         return AddEmployeeCallback.InvokeAsync(newEmployee);
     }
@@ -119,6 +129,7 @@
         var invalidProperties = string.IsNullOrEmpty(_newFirstName) ||
                                 string.IsNullOrEmpty(_newLastName) ||
                                 string.IsNullOrEmpty(_newLogin) ||
+                                string.IsNullOrEmpty(_newPassword) || 
                                 _newSalary <= 0 ||
                                 _permissions is null ||
                                 string.IsNullOrEmpty(_position);

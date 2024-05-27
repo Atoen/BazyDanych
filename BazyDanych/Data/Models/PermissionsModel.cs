@@ -12,5 +12,13 @@ public record PermissionsModel(string Permissions)
     public const string WarehousemanPermission = "magazynier";
     public const string SalesmanPermission = "sprzedawca";
 
+    public int DatabaseId => Permissions switch
+    {
+        ManagerPermission => 1,
+        WarehousemanPermission => 2,
+        SalesmanPermission => 3,
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
     public static IReadOnlyList<PermissionsModel> AllPermissions { get; } = [Manager, Warehouseman, Salesman];
 }

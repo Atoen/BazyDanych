@@ -37,6 +37,7 @@ else
                 <th>Login</th>
                 <th>Płaca</th>
                 <th>Stanowisko</th>
+                <th>Uprawnienia</th>
             </tr>
             </thead>
             <tbody>
@@ -52,8 +53,9 @@ else
                     <td>@(employee.SecondName ?? "-")</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Login</td>
-                    <td>@employee.Salary</td>
+                    <td>@employee.Position.Salary</td>
                     <td>@employee.Position.Name</td>
+                    <td>@employee.Position.Permissions</td>
                 </tr>
             }
             </tbody>
@@ -109,15 +111,16 @@ else
     private async Task EmployeeModified(EmployeeModel employee)
     {
         await _modal.HideAsync();
-
+        await EmployeeRepository.ModifyEmployeeAsync(employee);
+        
         var modifiedEmployee = _employees?.FirstOrDefault(x => x.Id == employee.Id);
         if (modifiedEmployee is null) return;
 
         modifiedEmployee.Login = employee.Login;
-        modifiedEmployee.Salary = employee.Salary;
         modifiedEmployee.FirstName = employee.FirstName;
         modifiedEmployee.SecondName = employee.SecondName;
         modifiedEmployee.LastName = employee.LastName;
+        modifiedEmployee.Position = employee.Position;
     }
 
     private async Task DeleteEmployee(EmployeeModel employee)
@@ -141,7 +144,9 @@ else
     private async Task EmployeeAdded(EmployeeModel employee)
     {
         await _modal.HideAsync();
-
+        var employeeId = await EmployeeRepository.AddEmployeeAsync(employee);
+        employee.Id = employeeId;
+        
         _employees = _employees?.Concat([employee]);
     }
 

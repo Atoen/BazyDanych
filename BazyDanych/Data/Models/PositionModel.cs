@@ -1,3 +1,3 @@
 namespace BazyDanych.Data.Models;
 
-public record PositionModel(string Name, PermissionsModel Permissions);
+public record PositionModel(int Id, string Name, decimal Salary, PermissionsModel Permissions);

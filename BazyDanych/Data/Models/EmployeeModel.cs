@@ -8,7 +8,7 @@ public class EmployeeModel(
     string? secondName,
     string lastName,
     string login,
-    decimal salary,
+    string password,
     PositionModel position)
 {
     private string? _fullName;
@@ -19,6 +19,6 @@ public class EmployeeModel(
     public string? SecondName { get; set; } = secondName;
     public string LastName { get; set; } = lastName;
     public string Login { get; set; } = login;
-    public decimal Salary { get; set; } = salary;
+    public string Password { get; set; } = password;
     public PositionModel Position { get; set; } = position;
 }

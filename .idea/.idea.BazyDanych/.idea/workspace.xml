@@ -9,20 +9,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa332b26-b643-473c-815e-8cb0e44a57c4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddEmployeeModal.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditEmployeeModal.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/BazyDanych.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/BazyDanych.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/AddProductModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddProductModal.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/EditProductModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditProductModal.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddEmployeeModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddEmployeeModal.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditEmployeeModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditEmployeeModal.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +86,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/cd/5a90a8c4/Dropdown.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/eb/dbf75267/IconName.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/f6/1db838fb/BootstrapIconProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/32/d49e8943/IDbTransaction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/53/4fed5dec/IDbConnection.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/5d/e709b2c7/IsolationLevel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/ba/a6bf0345/CommandType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dd2c5c41c8b0466a90971b5dfb320b946d8a0/27/5a78fc9b/IUserStore`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fba9afd29efa49229d2dd911da0bdfedc8e910/bb/1af61a01/VoidTaskResult.cs" root0="SKIP_HIGHLIGHTING" />
@@ -201,7 +198,8 @@
       <workItem from="1716210107454" duration="6581000" />
       <workItem from="1716388879159" duration="283000" />
       <workItem from="1716389180472" duration="9900000" />
-      <workItem from="1716402622004" duration="4639000" />
+      <workItem from="1716402622004" duration="4823000" />
+      <workItem from="1716820369324" duration="3365000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -235,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716399055950</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Adding employee">
+      <option name="closed" value="true" />
+      <created>1716407451160</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716407451160</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +255,7 @@
     <MESSAGE value="Logging in + top bar displaying employe info" />
     <MESSAGE value="MessageStatus" />
     <MESSAGE value="Adding new, deleting and modifying existing products in menu + role authorization" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding new, deleting and modifying existing products in menu + role authorization" />
+    <MESSAGE value="Adding employee" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding employee" />
   </component>
 </project>
