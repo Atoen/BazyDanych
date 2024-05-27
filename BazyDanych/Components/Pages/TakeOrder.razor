@@ -1,0 +1,169 @@
+@page "/TakeOrder"
+@using BazyDanych.Data.Entities
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+@using BazyDanych.Services
+
+<RequireLoggedIn RequiredPermissions="[PermissionsModel.Manager, PermissionsModel.Salesman]"/>
+
+<PageTitle>Przyjmij zamówienie</PageTitle>
+
+<ConfirmDialog @ref="_dialog"/>
+
+<h3>Przyjmij zamówienie</h3>
+
+<div class="d-flex" style="gap: 10px">
+    <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+</div>
+
+<div class="row my-3">
+    <div class="col-md-5">
+        <label class="form-label">Produkt</label>
+        <AutoComplete @bind-Value="_selectedProductName"
+                      TItem="Product"
+                      DataProvider="ProductDataProvider"
+                      Placeholder="Wyszukaj produkt"
+                      PropertyName="Name"
+                      LoadingText="Ładowanie..."
+                      EmptyText="Nie znaleziono produktów."
+                      OnChanged="OnAutoCompleteChanged">
+        </AutoComplete>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Liczba</label>
+        <NumberInput TValue="int" @bind-Value="@_amount" Placeholder="Podaj ilość w zamówieniu"
+                     AllowNegativeNumbers="false" Min="0" EnableMinMax="true" Max="int.MaxValue"/>
+    </div>
+    <div class="col-md-2 pe-none">
+        <label class="form-label">Cena sumaryczna</label>
+        <CurrencyInput id="totalPrice" TValue="decimal" @bind-Value="_totalPrice" Locale="pl-pl" class="form-control"
+                       readonly="true"/>
+    </div>
+</div>
+
+<div class="d-flex my-3" style="gap: 10px">
+    <Button Color="ButtonColor.Success" @onclick="AddOrder">Dodaj produkty</Button>
+    <Button Color="ButtonColor.Warning" @onclick="PlaceOrder">Złóż zamówienie</Button>
+</div>
+
+<StatusMessage Data="_statusMessageData"/>
+
+<div class="container">
+
+    <table class="table products-table">
+        <thead>
+        <tr>
+            <th/>
+            <th>Produkt</th>
+            <th>Ilość zamówiona</th>
+            <th>Cena</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in _orders)
+        {
+        <tr>
+            <td @onclick="() => DeleteOrder(order)" @onclick:stopPropagation="true">
+                <div class="delete-icon">
+                    <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
+                </div>
+            </td>
+            <td>@order.Product.Name</td>
+            <td>@order.Quantity</td>
+            <td>@order.TotalPrice</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@inject RedirectManager RedirectManager
+@inject ProductRepository ProductRepository
+
+@code {
+
+    private record ItemOrder(Product Product, int Quantity)
+    {
+        public decimal TotalPrice => Product.Price * Quantity;
+    }
+    
+    private string? _selectedProductName;
+    private Product? _selectedProduct;
+    private int _amount;
+
+    private decimal _totalPrice;
+    private StatusMessageData? _statusMessageData;
+    
+    private ConfirmDialog _dialog = default!;
+    private readonly ConfirmDialogOptions _dialogOptions = new()
+    {
+        YesButtonText = "Tak",
+        YesButtonColor = ButtonColor.Success,
+        NoButtonText = "Anuluj",
+        NoButtonColor = ButtonColor.Danger,
+        AutoFocusYesButton = false
+    };
+    
+    private readonly List<ItemOrder> _orders = [];
+    private IEnumerable<Product>? _cachedProducts;
+    
+    private async Task<AutoCompleteDataProviderResult<Product>> ProductDataProvider(AutoCompleteDataProviderRequest<Product> request)
+    {
+        _cachedProducts ??= await ProductRepository.GetProductsAsync();
+
+        return request.ApplyTo(_cachedProducts.OrderBy(x => x.Name));
+    }
+    
+    private void AddOrder()
+    {
+        _statusMessageData = null;
+        
+        if (_selectedProduct is null || _amount <= 0)
+        {
+            _statusMessageData = new StatusMessageData("Niepoprawne dane zamówienia", StatusMessageType.Error);
+            return;
+        }
+        
+        _orders.Add(new ItemOrder(_selectedProduct, _amount));
+        _totalPrice = _orders.Sum(x => x.TotalPrice);
+    }
+    
+    private void DeleteOrder(ItemOrder order)
+    {
+        _orders.Remove(order);
+    }
+    
+    private void OnAutoCompleteChanged(Product? product)
+    {
+        _selectedProduct = product;
+
+        Console.WriteLine($"'{product?.Name}' selected.");
+    }
+    
+    private void ClearData()
+    {
+        _selectedProduct = null;
+        _selectedProductName = null;
+        _totalPrice = 0;
+        _amount = 0;
+        _orders.Clear();
+    }
+    
+    private async Task PlaceOrder()
+    {
+        if (_orders.Count == 0) return;
+        
+        var productCount = _orders.Sum(x => x.Quantity);
+        var confirmation = await _dialog.ShowAsync(
+            title: "Złóż zamówienie",
+            message1: $"Czy zamówienie za {_totalPrice} zł składające się z {productCount} produktów jest poprawne?",
+            confirmDialogOptions: _dialogOptions);
+
+        if (!confirmation) return;
+        
+        ClearData();
+    }
+    
+    private void GoBack() => RedirectManager.RedirectTo("/");
+
+}

@@ -1,0 +1,65 @@
+@page "/Warehouse"
+@using BazyDanych.Data.Entities
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+@using BazyDanych.Services
+
+<RequireLoggedIn RequiredPermissions="[PermissionsModel.Manager, PermissionsModel.Warehouseman]"/>
+
+<PageTitle>Stan magazynu</PageTitle>
+
+<h3>Stan magazynu</h3>
+
+<div class="d-flex" style="gap: 10px">
+    <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+    <Button Color="ButtonColor.Primary" @onclick="PlaceOrder">Złóż zamówienie</Button>
+</div>
+
+@if (_productsStatuses is null)
+{
+    <p>
+        <em>Ładowanie danych...</em>
+    </p>
+}
+else
+{
+    <div class="container">
+        <table class="table products-table">
+            <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Dostępna ilość</th>
+                <th>Dostępna ilość z zamówieniami</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var status in _productsStatuses)
+            {
+                <tr>
+                    <td>@status.ProductName</td>
+                    <td>@status.AvailableQuantity</td>
+                    <td>@status.AvailableQuantity</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@inject RedirectManager RedirectManager
+@inject ProductRepository ProductRepository
+
+@code {
+    private IEnumerable<WarehouseProductStatus>? _productsStatuses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _productsStatuses = await ProductRepository.GetWarehouseProductStatusAsync();
+    }
+
+    private void GoBack() => RedirectManager.RedirectTo("/");
+
+    private void PlaceOrder() => RedirectManager.RedirectTo("/Warehouse/PlaceOrder");
+
+}

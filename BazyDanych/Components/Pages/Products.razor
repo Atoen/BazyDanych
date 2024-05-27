@@ -3,7 +3,7 @@
 @using BazyDanych.Data.Entities
 @using BazyDanych.Repositories
 
-<RequireLoggedIn />
+<RequireLoggedIn/>
 
 <h3>Products</h3>
 
@@ -11,7 +11,9 @@
 
 @if (_products is null)
 {
-    <p><em>Loading products...</em></p>
+    <p>
+        <em>Loading products...</em>
+    </p>
 }
 else
 {
@@ -45,9 +47,9 @@ else
 @inject ProductRepository Repository
 
 @code {
-    
+
     [Parameter] public string? ProductName { get; set; }
-    
+
     private IEnumerable<Product>? _products;
 
     protected override async Task OnInitializedAsync()

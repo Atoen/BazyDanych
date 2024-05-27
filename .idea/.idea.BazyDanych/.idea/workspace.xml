@@ -9,14 +9,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa332b26-b643-473c-815e-8cb0e44a57c4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Warehouse.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Warehouse.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Entities/WarehouseProductStatus.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddEmployeeModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/AddEmployeeModal.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditEmployeeModal.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Modals/EditEmployeeModal.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/EmployeeModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PermissionsModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/PositionModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/EmployeeRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/RequireLoggedIn.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/RequireLoggedIn.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/DapperContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/DapperContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/MenuOptionsProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/MenuOptionsProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +78,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Servers/Kestrel/Core/src/Internal/Http/HttpProtocol.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Linq/src/System/Linq/Concat.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/StringSyntaxAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Threading/PeriodicTimer.cs" root0="SKIP_HIGHLIGHTING" />
@@ -81,6 +90,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/27/a42e0624/ButtonType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/51/a438d0d7/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/7e/b8bfc5cd/CurrencyInput`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/a6/d71852ed/AutoComplete`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/b2/183f146a/Icon.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/c2/493d84c4/IconSize.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/294e005665bc4bc5b3127c4bc7cde8d7b3600/cd/5a90a8c4/Dropdown.cs" root0="SKIP_HIGHLIGHTING" />
@@ -199,7 +209,8 @@
       <workItem from="1716388879159" duration="283000" />
       <workItem from="1716389180472" duration="9900000" />
       <workItem from="1716402622004" duration="4823000" />
-      <workItem from="1716820369324" duration="3365000" />
+      <workItem from="1716820369324" duration="6523000" />
+      <workItem from="1716842567186" duration="3487000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -241,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716407451160</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Adding and saving modified employees to db">
+      <option name="closed" value="true" />
+      <created>1716823876710</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716823876710</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,6 +275,7 @@
     <MESSAGE value="MessageStatus" />
     <MESSAGE value="Adding new, deleting and modifying existing products in menu + role authorization" />
     <MESSAGE value="Adding employee" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding employee" />
+    <MESSAGE value="Adding and saving modified employees to db" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding and saving modified employees to db" />
   </component>
 </project>

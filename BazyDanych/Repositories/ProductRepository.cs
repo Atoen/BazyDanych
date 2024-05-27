@@ -1,5 +1,6 @@
 using BazyDanych.Data;
 using BazyDanych.Data.Entities;
+using BazyDanych.Data.Models;
 using Dapper;
 
 namespace BazyDanych.Repositories;
@@ -22,6 +23,17 @@ public class ProductRepository
 
         using var connection = _context.CreateRootConnection();
         return await connection.QueryAsync<Product>(query);
+    }
+    
+    
+    public async Task<IEnumerable<WarehouseProductStatus>> GetWarehouseProductStatusAsync()
+    {
+        const string query = """
+                             SELECT * FROM "Stan_magazynu_z_oczekującymi_zamowieniami"
+                             """;
+
+        using var connection = _context.CreateRootConnection();
+        return await connection.QueryAsync<WarehouseProductStatus>(query);
     }
 
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)

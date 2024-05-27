@@ -49,6 +49,7 @@ public class DapperContext
         MapEntityType(typeof(WarehouseOrderDetail));
         MapEntityType(typeof(ClientOrder));
         MapEntityType(typeof(ClientOrderDetail));
+        MapEntityType(typeof(WarehouseProductStatus));
     }
 
     private static void MapEntityType(Type type)

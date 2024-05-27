@@ -5,7 +5,7 @@
 {
     <RedirectToLogin />
 }
-else if (RequiredPermissions is not null && UserService.EmployeePermissions != RequiredPermissions)
+else if (RequiredPermissions is not null && !RequiredPermissions.Contains(UserService.EmployeePermissions!))
 {
     <RedirectToUnauthorized />
 }
@@ -13,5 +13,5 @@ else if (RequiredPermissions is not null && UserService.EmployeePermissions != R
 @inject UserService UserService
 
 @code {
-    [Parameter] public PermissionsModel? RequiredPermissions { get; set; }
+    [Parameter] public List<PermissionsModel>? RequiredPermissions { get; set; }
 }

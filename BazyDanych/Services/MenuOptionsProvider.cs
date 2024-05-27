@@ -30,7 +30,7 @@ public class MenuOptionsProvider
             new MenuOption("Edytuj menu", "/EditMenu"),
             new MenuOption("Zamówienia i stan magazynu", "/Warehouse"),
             new MenuOption("Zarządzaj pracownikami", "/Employees"),
-            new MenuOption("Raporty", "/Raports")
+            new MenuOption("Raporty", "/Reports")
         ];
     }
     
@@ -38,9 +38,9 @@ public class MenuOptionsProvider
     {
         return
         [
-            new MenuOption("Złóż zamówienie", "/Warehouse/PlaceOrder"),
-            new MenuOption("Stan magazynu", "/Warehouse/Products"),
-            new MenuOption("Potwierdź dostarczenie", "/ConfirmDelivery")
+            new MenuOption("Złóż zamówienie", "/Warehouse/PlaceOrder?FromMenu=true"),
+            new MenuOption("Stan magazynu", "/Warehouse"),
+            new MenuOption("Potwierdź dostarczenie", "/Warehouse/ConfirmDelivery")
         ];
     }
     
@@ -49,7 +49,7 @@ public class MenuOptionsProvider
         return
         [
             new MenuOption("Przyjmij zamówienie", "/TakeOrder"),
-            new MenuOption("Potwierdź dostarczenie zamówienia", "/ConfirmDelivery"),
+            new MenuOption("Potwierdź dostarczenie zamówienia", "/Warehouse/ConfirmDelivery"),
         ];
     }
 }

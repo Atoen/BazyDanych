@@ -1,0 +1,9 @@
+.products-table tbody tr:hover td {
+    background-color: #e8e8e8;
+}
+
+.container {
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+    margin-top: 10px;
+}
