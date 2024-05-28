@@ -14,9 +14,9 @@ public class Product
 
     [Column("dostepna_ilosc")] public int AvailableQuantity { get; set; }
 
-    [Column("nazwa")] public string Name { get; set; } = null!;
+    [Column("nazwa")] public string Name { get; set; } = string.Empty;
 
-    [Column("jednostka")] public string Unit { get; set; } = null!;
+    [Column("jednostka")] public string Unit { get; set; } = string.Empty;
 
-    [Column("kategoria")] public string Category { get; set; } = null!;
+    [Column("kategoria")] public string Category { get; set; } = string.Empty;
 }

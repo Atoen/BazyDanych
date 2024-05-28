@@ -1,5 +1,6 @@
 using BazyDanych.Components;
 using BazyDanych.Data;
+using BazyDanych.Data.Models;
 using BazyDanych.Repositories;
 using BazyDanych.Services;
 
@@ -14,6 +15,8 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<ClientOrderRepository>();
+builder.Services.AddScoped<WarehouseOrderRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<MenuOptionsProvider>();
 builder.Services.AddScoped<RedirectManager>();

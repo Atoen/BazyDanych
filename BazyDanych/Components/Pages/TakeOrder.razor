@@ -1,4 +1,5 @@
 @page "/TakeOrder"
+@using System.Collections.Immutable
 @using BazyDanych.Data.Entities
 @using BazyDanych.Data.Models
 @using BazyDanych.Repositories
@@ -69,8 +70,8 @@
                 </div>
             </td>
             <td>@order.Product.Name</td>
-            <td>@order.Quantity</td>
-            <td>@order.TotalPrice</td>
+            <td>@order.Amount</td>
+            <td>@order.Price</td>
         </tr>
         }
         </tbody>
@@ -79,13 +80,9 @@
 
 @inject RedirectManager RedirectManager
 @inject ProductRepository ProductRepository
+@inject ClientOrderRepository ClientOrderRepository
 
 @code {
-
-    private record ItemOrder(Product Product, int Quantity)
-    {
-        public decimal TotalPrice => Product.Price * Quantity;
-    }
     
     private string? _selectedProductName;
     private Product? _selectedProduct;
@@ -104,7 +101,7 @@
         AutoFocusYesButton = false
     };
     
-    private readonly List<ItemOrder> _orders = [];
+    private readonly List<ClientOrderPart> _orders = [];
     private IEnumerable<Product>? _cachedProducts;
     
     private async Task<AutoCompleteDataProviderResult<Product>> ProductDataProvider(AutoCompleteDataProviderRequest<Product> request)
@@ -124,11 +121,11 @@
             return;
         }
         
-        _orders.Add(new ItemOrder(_selectedProduct, _amount));
-        _totalPrice = _orders.Sum(x => x.TotalPrice);
+        _orders.Add(new ClientOrderPart(_selectedProduct, _amount, _selectedProduct.Price * _amount));
+        _totalPrice = _orders.Sum(x => x.Price);
     }
     
-    private void DeleteOrder(ItemOrder order)
+    private void DeleteOrder(ClientOrderPart order)
     {
         _orders.Remove(order);
     }
@@ -153,13 +150,17 @@
     {
         if (_orders.Count == 0) return;
         
-        var productCount = _orders.Sum(x => x.Quantity);
+        var productCount = _orders.Sum(x => x.Amount);
         var confirmation = await _dialog.ShowAsync(
             title: "Złóż zamówienie",
             message1: $"Czy zamówienie za {_totalPrice} zł składające się z {productCount} produktów jest poprawne?",
             confirmDialogOptions: _dialogOptions);
 
         if (!confirmation) return;
+
+        // total price calculated by trigger
+        var clientOrder = new ClientOrderModel(0, DateTime.Now, 0, _orders.ToImmutableList());
+        await ClientOrderRepository.AddClientOrderAsync(clientOrder);
         
         ClearData();
     }

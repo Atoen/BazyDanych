@@ -1,0 +1,39 @@
+@using BazyDanych.Data.Models
+
+<Button @onclick="Toggle">@Model.TakenAt - @Model.TotalPrice zł</Button>
+
+<Collapse @ref="_collapse">
+    <Card>
+        <CardBody>
+            <p><strong>Taken At:</strong> @Model.TakenAt</p>
+            <p><strong>Total Price:</strong> @Model.TotalPrice</p>
+            <table class="table parts-table">
+                <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var part in Model.Parts)
+                {
+                <tr>
+                    <td>@part.Product.Name</td>
+                    <td>@part.Amount</td>
+                    <td>@part.Price</td>
+                </tr>
+                }
+                </tbody>
+            </table>
+        </CardBody>
+    </Card>
+</Collapse>
+
+@code {
+    [Parameter, EditorRequired] public required ClientOrderModel Model { get; set; }
+
+    private Collapse _collapse = default!;
+
+    private Task Toggle() => _collapse.ToggleAsync();
+}

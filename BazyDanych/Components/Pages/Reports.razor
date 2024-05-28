@@ -1,0 +1,93 @@
+@page "/Reports"
+@using BazyDanych.Components.Layout
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+@layout ReportLayout
+
+<RequireLoggedIn RequiredPermissions="[PermissionsModel.Manager]"/>
+
+<PageTitle>Raporty</PageTitle>
+
+<Modal @ref="_modal" Title="Szczegóły zamówienia">
+    <BodyTemplate>
+        @if (_clientOrder is { } order)
+        {
+            <p><strong>Data zamówienia:</strong> @order.TakenAt</p>
+            <p><strong>Cena sumaryczna:</strong> @order.TotalPrice</p>
+            <div style="max-height: calc(100vh - 300px); overflow-y: auto;">
+            <table class="table parts-table">
+                <thead>
+                <tr>
+                    <th>Produkt</th>
+                    <th>Ilość</th>
+                    <th>Cena</th>
+                </tr>
+                </thead>
+                    <tbody>
+                    @foreach (var part in order.Parts)
+                    {
+                    <tr>
+                        <td>@part.Product.Name</td>
+                        <td>@part.Amount</td>
+                        <td>@part.Price zł</td>
+                    </tr>
+                    }
+                    </tbody>
+            </table>
+                </div>
+        }
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="CloseModal">Zamknij</Button>
+    </FooterTemplate>
+</Modal>
+
+<h3>Raporty</h3>
+
+@if (_clientOrders is null)
+{
+    <p>
+        <em>Ładowanie zamówień...</em>
+    </p>
+}
+else if (!_clientOrders.Any())
+{
+    <p>
+        <em>Brak zamówień do wyświetlenia.</em>
+    </p>
+}
+else
+{
+    <div class="d-flex flex-column w-25">
+        @foreach (var order in _clientOrders)
+        {
+            <Button class="my-1" Color="ButtonColor.Info"
+                    @onclick="() => ShowOrderDetails(order)">
+                @order.TakenAt &nbsp;&nbsp;&nbsp; @order.TotalPrice zł
+            </Button>
+        }
+    </div>
+}
+
+@inject ClientOrderRepository ClientOrderRepository
+
+@code {
+    
+    private Modal _modal = default!;
+    private ClientOrderModel? _clientOrder;
+    
+    private IEnumerable<ClientOrderModel>? _clientOrders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _clientOrders = await ClientOrderRepository.GetAllClientOrdersAsync();
+    }
+    
+    private Task ShowOrderDetails(ClientOrderModel clientOrderModel)
+    {
+        _clientOrder = clientOrderModel;
+        return _modal.ShowAsync();
+    }
+
+    private Task CloseModal() => _modal.HideAsync();
+}

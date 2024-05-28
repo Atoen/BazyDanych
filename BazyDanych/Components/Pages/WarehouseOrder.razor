@@ -1,4 +1,5 @@
 @page "/Warehouse/PlaceOrder"
+@using System.Collections.Immutable
 @using BazyDanych.Data.Entities
 @using BazyDanych.Data.Models
 @using BazyDanych.Repositories
@@ -55,7 +56,7 @@
 <StatusMessage Data="_statusMessageData"/>
 
 <div class="container">
-    
+
     <table class="table products-table">
         <thead>
         <tr>
@@ -70,10 +71,10 @@
         {
             <tr>
                 <td @onclick="() => DeleteOrder(order)" @onclick:stopPropagation="true">
-                    <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5" />
+                    <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"/>
                 </td>
                 <td>@order.Product.Name</td>
-                <td>@order.Quantity</td>
+                <td>@order.Amount</td>
                 <td>@order.Price</td>
             </tr>
         }
@@ -83,13 +84,13 @@
 
 @inject RedirectManager RedirectManager
 @inject ProductRepository ProductRepository
+@inject WarehouseOrderRepository WarehouseOrderRepository
+@inject UserService UserService
 
 @code {
-    
+
     [SupplyParameterFromQuery] public bool? FromMenu { get; set; }
-    
-    private record WarehouseItemOrder(Product Product, int Quantity, decimal Price);
-    
+
     private string? _selectedProductName;
     private Product? _selectedProduct;
     private int _amount;
@@ -99,6 +100,7 @@
     private StatusMessageData? _statusMessageData;
 
     private ConfirmDialog _dialog = default!;
+
     private readonly ConfirmDialogOptions _dialogOptions = new()
     {
         YesButtonText = "Tak",
@@ -108,7 +110,7 @@
         AutoFocusYesButton = false
     };
 
-    private readonly List<WarehouseItemOrder> _orders = [];
+    private readonly List<WarehouseOrderPart> _orders = [];
     private IEnumerable<Product>? _cachedProducts;
 
     private void GoBack() => RedirectManager.RedirectTo(FromMenu is true ? "/" : "/Warehouse");
@@ -123,18 +125,18 @@
     private void AddOrder()
     {
         _statusMessageData = null;
-        
+
         if (_selectedProduct is null || _amount <= 0 || _price <= 0)
         {
             _statusMessageData = new StatusMessageData("Niepoprawne dane zamówienia", StatusMessageType.Error);
             return;
         }
-        
-        _orders.Add(new WarehouseItemOrder(_selectedProduct, _amount, _price));
+
+        _orders.Add(new WarehouseOrderPart(_selectedProduct, _amount, _price));
         _totalPrice = _orders.Sum(x => x.Price);
     }
 
-    private void DeleteOrder(WarehouseItemOrder order)
+    private void DeleteOrder(WarehouseOrderPart order)
     {
         _orders.Remove(order);
     }
@@ -159,15 +161,25 @@
     private async Task PlaceOrder()
     {
         if (_orders.Count == 0) return;
-        
-        var productCount = _orders.Sum(x => x.Quantity);
+
+        var productCount = _orders.Sum(x => x.Amount);
         var confirmation = await _dialog.ShowAsync(
             title: "Złóż zamówienie",
             message1: $"Czy zamówienie za {_totalPrice} zł składające się z {productCount} produktów jest poprawne?",
             confirmDialogOptions: _dialogOptions);
 
         if (!confirmation) return;
-        
+
+        if (UserService.Employee is not { Id: var orderingEmployeeId })
+        {
+            RedirectManager.RedirectToLogin();
+            return;
+        }
+
+        var warehouseOrder = new WarehouseOrderModel(
+            DateTime.Now, orderingEmployeeId, _totalPrice, _orders.ToImmutableList());
+        await WarehouseOrderRepository.AddWarehouseOrderAsync(warehouseOrder);
+
         ClearData();
     }
 }

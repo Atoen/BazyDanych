@@ -9,22 +9,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa332b26-b643-473c-815e-8cb0e44a57c4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Warehouse.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Warehouse.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Entities/WarehouseProductStatus.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/ClientOrderModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Data/Models/WarehouseOrderModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Repositories/ClientOrderRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BazyDanych/Repositories/WarehouseOrderRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BazyDanych/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/EditMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Employees.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Products.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/RequireLoggedIn.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/RequireLoggedIn.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/DapperContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/DapperContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Repositories/ProductRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/MenuOptionsProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/MenuOptionsProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Services/RedirectManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/TakeOrder.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Components/Pages/WarehouseOrder.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Data/Entities/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Data/Entities/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BazyDanych/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BazyDanych/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +70,10 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Extensions.Core/src/IdentityServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Identity/Extensions.Core/src/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/da7e9894ce22ef8cc02e5acc56e95a6f8cf8f644/src/Servers/Kestrel/Core/src/Internal/Http/HttpProtocol.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Collections.Immutable/src/System/Collections/Immutable/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Collections.Immutable/src/System/Collections/Immutable/ImmutableList_1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Linq/src/System/Linq/Concat.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Linq/src/System/Linq/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/Dictionary.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/1381d5ebd2ab1f292848d5b19b80cf71ac332508/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/StringSyntaxAttribute.cs" root0="SKIP_HIGHLIGHTING" />
@@ -100,6 +97,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/53/4fed5dec/IDbConnection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/5d/e709b2c7/IsolationLevel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d72cec70989403bb7c21738e59cc0552ba920/ba/a6bf0345/CommandType.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ab83a7716345425daef2bd31a712b9f684918/5c/1ec5d71c/IGrouping`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dd2c5c41c8b0466a90971b5dfb320b946d8a0/27/5a78fc9b/IUserStore`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fba9afd29efa49229d2dd911da0bdfedc8e910/bb/1af61a01/VoidTaskResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2373546ed22296985948c41cd3467cce7432b9af70eb51b096eb185664af352f/NpgsqlConnection.cs" root0="SKIP_HIGHLIGHTING" />
@@ -124,36 +122,37 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.BazyDanych: http.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Artur/source/repos/BazyDanych/BazyDanych&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;database.query.execution&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.BazyDanych: http.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Artur/source/repos/BazyDanych/BazyDanych",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "SpellingScopeSettingsId",
+    "sql.codeStylePanel.last.previewDialect": "PostgreSQL",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ],
-    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
-      &quot;PostgreSQL&quot;
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "PostgreSQL"
     ],
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\Artur\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\Artur\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\Artur\\AppData\\Local\\Symbols\\src&quot;
+    "rider.external.source.directories": [
+      "C:\\Users\\Artur\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Artur\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\Artur\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.BazyDanych: http">
     <configuration name="BazyDanych: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/BazyDanych/BazyDanych.csproj" />
@@ -210,7 +209,8 @@
       <workItem from="1716389180472" duration="9900000" />
       <workItem from="1716402622004" duration="4823000" />
       <workItem from="1716820369324" duration="6523000" />
-      <workItem from="1716842567186" duration="3487000" />
+      <workItem from="1716842567186" duration="3766000" />
+      <workItem from="1716903126179" duration="8287000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -260,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716823876710</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Pages for ordering to warehouse and taking customer order">
+      <option name="closed" value="true" />
+      <created>1716846366864</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716846366864</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,6 +284,31 @@
     <MESSAGE value="Adding new, deleting and modifying existing products in menu + role authorization" />
     <MESSAGE value="Adding employee" />
     <MESSAGE value="Adding and saving modified employees to db" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding and saving modified employees to db" />
+    <MESSAGE value="Pages for ordering to warehouse and taking customer order" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pages for ordering to warehouse and taking customer order" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/BazyDanych/Components/Pages/Home.razor</url>
+          <line>57</line>
+          <properties documentPath="C:\Users\Artur\source\repos\BazyDanych\BazyDanych\Components\Pages\Home.razor" isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+            <startOffsets>
+              <option value="-1" />
+            </startOffsets>
+            <endOffsets>
+              <option value="-1" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

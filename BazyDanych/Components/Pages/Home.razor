@@ -2,6 +2,7 @@
 
 @using BazyDanych.Components.Layout
 @using BazyDanych.Data.Models
+@using BazyDanych.Repositories
 @using BazyDanych.Services
 @layout MainLayout
 
@@ -33,6 +34,9 @@
 @inject RedirectManager RedirectManager
 @inject MenuOptionsProvider OptionsProvider
 
+@inject ClientOrderRepository ClientOrderRepository
+@inject WarehouseOrderRepository WarehouseOrderRepository
+
 @code {
     private void ManageAccount() => RedirectManager.RedirectTo("/Account");
 
@@ -43,5 +47,13 @@
     protected override void OnInitialized()
     {
         _options = OptionsProvider.GetOptions().ToList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        
+        var oro = await ClientOrderRepository.GetAllClientOrdersAsync();
+        var oro2 = await WarehouseOrderRepository.GetAllWarehouseOrdersAsync();
     }
 }
