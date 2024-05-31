@@ -19,7 +19,7 @@ public class RedirectManager(NavigationManager navigationManager, IJSRuntime jsR
 
     public void RedirectToLogin()
     {
-        navigationManager.NavigateTo("/Login", true);
+        navigationManager.NavigateTo("/Login");
     }
     
     public void RedirectToRoot()

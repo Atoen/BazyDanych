@@ -1,6 +1,5 @@
 using BazyDanych.Components;
 using BazyDanych.Data;
-using BazyDanych.Data.Models;
 using BazyDanych.Repositories;
 using BazyDanych.Services;
 

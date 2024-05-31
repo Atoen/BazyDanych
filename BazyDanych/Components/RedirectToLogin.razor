@@ -3,7 +3,13 @@
 @code {
     protected override void OnInitialized()
     {
-        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(returnUrl)}", forceLoad: true);
+        try
+        {
+            var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+            NavigationManager.NavigateTo($"/Login?returnUrl={Uri.EscapeDataString(returnUrl)}", forceLoad: true);
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 }

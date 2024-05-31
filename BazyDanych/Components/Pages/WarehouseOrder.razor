@@ -177,7 +177,7 @@
         }
 
         var warehouseOrder = new WarehouseOrderModel(
-            DateTime.Now, orderingEmployeeId, _totalPrice, _orders.ToImmutableList());
+            0, DateTime.Now, orderingEmployeeId, _totalPrice, _orders.ToImmutableList());
         await WarehouseOrderRepository.AddWarehouseOrderAsync(warehouseOrder);
 
         ClearData();

@@ -1,4 +1,4 @@
-@page "/Reports"
+@page "/Reports/Warehouse"
 @using BazyDanych.Components.Layout
 @using BazyDanych.Data.Models
 @using BazyDanych.Repositories
@@ -6,17 +6,27 @@
 
 <RequireLoggedIn RequiredPermissions="[PermissionsModel.Manager]"/>
 
-<PageTitle>Raporty sprzedaży</PageTitle>
+<PageTitle>Raporty zamówień</PageTitle>
 
-<h3>Raporty sprzedaży</h3>
+<h3>Raporty zamówień</h3>
 
 <Modal @ref="_modal" Title="Szczegóły zamówienia">
     <BodyTemplate>
-        @if (_clientOrder is { } order)
+        @if (_warehouseOrderModel is { } order)
         {
-            <p><strong>Data zamówienia:</strong> @order.TakenAt</p>
+            <p><strong>Data złożenia:</strong> @order.PlacedAt</p>
+            <p><strong>Pracownik składający:</strong> @order.OrderingEmployeeId</p>
             <p><strong>Cena sumaryczna:</strong> @order.TotalPrice</p>
-            <div style="max-height: calc(100vh - 300px); overflow-y: auto;">
+            if (order.InProgress)
+            {
+                <p><strong>W realizacji</strong></p>
+            }
+            else
+            {
+                <p><strong>Data przyjęcia:</strong> @order.DeliveredAt</p>
+                <p><strong>Pracownik przyjmujący:</strong> @order.AcceptingEmployeeId</p>
+            }
+        <div style="max-height: calc(100vh - 300px); overflow-y: auto;">
             <table class="table parts-table">
                 <thead>
                 <tr>
@@ -44,13 +54,13 @@
     </FooterTemplate>
 </Modal>
 
-@if (_clientOrders is null)
+@if (_warehouseOrderModels is null)
 {
     <p>
         <em>Ładowanie zamówień...</em>
     </p>
 }
-else if (!_clientOrders.Any())
+else if (!_warehouseOrderModels.Any())
 {
     <p>
         <em>Brak zamówień do wyświetlenia.</em>
@@ -59,33 +69,37 @@ else if (!_clientOrders.Any())
 else
 {
     <div class="d-flex flex-column w-25">
-        @foreach (var order in _clientOrders)
+        @foreach (var order in _warehouseOrderModels)
         {
             <Button class="my-1" Color="ButtonColor.Info"
                     @onclick="() => ShowOrderDetails(order)">
-                @order.TakenAt &nbsp;&nbsp;&nbsp; @order.TotalPrice zł
+                @order.PlacedAt &nbsp;&nbsp;&nbsp; @order.TotalPrice zł 
+                @if (order.InProgress)
+                {
+                    @:W trakcie
+                }
             </Button>
         }
     </div>
 }
 
-@inject ClientOrderRepository ClientOrderRepository
+@inject WarehouseOrderRepository WarehouseOrderRepository
 
 @code {
     
     private Modal _modal = default!;
-    private ClientOrderModel? _clientOrder;
+    private WarehouseOrderModel? _warehouseOrderModel;
     
-    private IEnumerable<ClientOrderModel>? _clientOrders;
+    private IEnumerable<WarehouseOrderModel>? _warehouseOrderModels;
 
     protected override async Task OnInitializedAsync()
     {
-        _clientOrders = await ClientOrderRepository.GetAllClientOrdersAsync();
+        _warehouseOrderModels = await WarehouseOrderRepository.GetAllWarehouseOrdersAsync();
     }
     
-    private Task ShowOrderDetails(ClientOrderModel clientOrderModel)
+    private Task ShowOrderDetails(WarehouseOrderModel warehouseOrderModel)
     {
-        _clientOrder = clientOrderModel;
+        _warehouseOrderModel = warehouseOrderModel;
         return _modal.ShowAsync();
     }
 

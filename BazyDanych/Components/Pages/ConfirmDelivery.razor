@@ -1,0 +1,152 @@
+@page "/Warehouse/ConfirmDelivery"
+@using BazyDanych.Data.Models
+@using BazyDanych.Repositories
+@using BazyDanych.Services
+
+<RequireLoggedIn/>
+
+<PageTitle>Podwierdź dostarczenie zamówienia</PageTitle>
+
+<h3>Podwierdź dostarczenie zamówienia</h3>
+
+<div class="d-flex" style="gap: 10px">
+    <Button Color="ButtonColor.Primary" @onclick="GoBack">Powrót</Button>
+</div>
+
+<Modal @ref="_modal" Title="Szczegóły zamówienia">
+    <BodyTemplate>
+        @if (_warehouseOrder is { } order)
+        {
+            <p>
+                <strong>Data złożenia:</strong> @order.PlacedAt
+            </p>
+            if (_showFullInfo)
+            {
+                <p>
+                    <strong>Cena sumaryczna:</strong> @order.TotalPrice
+                </p>
+            }
+            <div style="max-height: calc(100vh - 300px); overflow-y: auto;">
+                <table class="table parts-table">
+                    <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Ilość</th>
+                        @if (_showFullInfo)
+                        {
+                            <th>Cena</th>
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var part in order.Parts)
+                    {
+                        <tr>
+                            <td>@part.Product.Name</td>
+                            <td>@part.Amount</td>
+                            @if (_showFullInfo)
+                            {
+                                <td>@part.Price zł</td>
+                            }
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </BodyTemplate>
+    <FooterTemplate>
+
+        @if (UserService.EmployeePermissions is { Permissions: PermissionsModel.WarehousemanPermission })
+        {
+            <Button Color="ButtonColor.Success" @onclick="() => MarkAsDelivered(_warehouseOrder!)">Potwierdź dostarczenie</Button>
+        }
+        else
+        {
+            <Button Color="ButtonColor.Success" @onclick="() => ConfirmDeliveryAsync(_warehouseOrder!)">Potwierdź odebranie</Button>
+        }
+
+        <Button Color="ButtonColor.Primary" @onclick="CloseModal">Zamknij</Button>
+    </FooterTemplate>
+</Modal>
+
+@if (_pendingOrders is null)
+{
+    <p>
+        <em>Ładowanie zamówień...</em>
+    </p>
+}
+else if (!_pendingOrders.Any())
+{
+    <p>
+        <em>
+            @if (_showFullInfo)
+            {
+                @:Brak zamówień w toku.
+            }
+            else
+            {
+                @:Brak zamówień gotowych do odebrania.
+            }
+        </em>
+    </p>
+}
+else
+{
+    <div class="d-flex flex-column w-25">
+        @foreach (var order in _pendingOrders)
+        {
+            <Button class="my-1" Color="ButtonColor.Info"
+                    @onclick="() => ShowOrderDetails(order)">
+                @order.PlacedAt
+            </Button>
+        }
+    </div>
+}
+
+@inject RedirectManager RedirectManager
+@inject UserService UserService
+@inject WarehouseOrderRepository WarehouseOrderRepository
+
+@code {
+
+    private Modal _modal = default!;
+    private WarehouseOrderModel? _warehouseOrder;
+
+    private IEnumerable<WarehouseOrderModel>? _pendingOrders;
+
+    private bool _showFullInfo;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _showFullInfo = UserService.EmployeePermissions is not { Permissions: PermissionsModel.SalesmanPermission };
+        
+        var pendingOrders = await WarehouseOrderRepository.GetPendingWarehouseOrdersAsync();
+        _pendingOrders = _showFullInfo ? pendingOrders : pendingOrders.Where(x => x.DeliveredAt is not null);
+    }
+
+    private Task ShowOrderDetails(WarehouseOrderModel warehouseOrderModel)
+    {
+        _warehouseOrder = warehouseOrderModel;
+        return _modal.ShowAsync();
+    }
+
+    private async Task MarkAsDelivered(WarehouseOrderModel warehouseOrderModel)
+    {
+        await WarehouseOrderRepository.MarkAsDeliveredAsync(warehouseOrderModel);
+        await _modal.HideAsync();
+    }
+    
+    private async Task ConfirmDeliveryAsync(WarehouseOrderModel warehouseOrderModel)
+    {
+        await WarehouseOrderRepository.ConfirmDeliveryAsync(warehouseOrderModel, UserService.Employee!);
+        _pendingOrders = _pendingOrders?.Where(x => x.Id != warehouseOrderModel.Id);
+        
+        await _modal.HideAsync();
+    }
+
+    private Task CloseModal() => _modal.HideAsync();
+    
+    private void GoBack() => RedirectManager.RedirectTo("/");
+
+}

@@ -1,6 +1,5 @@
 using BazyDanych.Data;
 using BazyDanych.Data.Entities;
-using BazyDanych.Data.Models;
 using Dapper;
 
 namespace BazyDanych.Repositories;
