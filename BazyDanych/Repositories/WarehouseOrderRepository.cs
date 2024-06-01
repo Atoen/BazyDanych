@@ -16,7 +16,7 @@ public class WarehouseOrderRepository
         _context = context;
     }
 
-    public async Task MarkAsDeliveredAsync(WarehouseOrderModel warehouseOrderModel)
+    public async Task MarkAsDeliveredAsync(WarehouseOrderModel warehouseOrderModel, PermissionsModel? permissionsModel)
     {
         const string query = """
                              UPDATE "Zamowienie_do_magazynu"
@@ -26,14 +26,18 @@ public class WarehouseOrderRepository
                                  id_zamowienia = @Id
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         await connection.ExecuteAsync(query, new { warehouseOrderModel.Id });
     }
     
     public async Task ConfirmDeliveryAsync(WarehouseOrderModel warehouseOrderModel, EmployeeModel confirmingEmployee)
     {
         const string procedure = "przyjecie_zamowienia";
-        using var connection = _context.CreateRootConnection();
+        
+        using var connection = _context.CreateUserConnection(confirmingEmployee.Position.Permissions);
+        
         var parameters = new
         {
             p_id_zamowienia = warehouseOrderModel.Id,
@@ -43,7 +47,7 @@ public class WarehouseOrderRepository
         await connection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task<List<WarehouseOrderModel>> GetPendingWarehouseOrdersAsync()
+    public async Task<IEnumerable<WarehouseOrderModel>> GetPendingWarehouseOrdersAsync(PermissionsModel? permissionsModel)
     {
         const string ordersQuery = """
                                    SELECT
@@ -70,7 +74,8 @@ public class WarehouseOrderRepository
                                     WHERE Z.id_pracownika_przyjmujacego IS NULL 
                                     """;
         
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+        using var connection = _context.CreateUserConnection(permissionsModel);
 
         var ordersResult = await connection.QueryAsync(ordersQuery);
         var detailsResults = await connection.QueryAsync(detailsQuery);
@@ -93,13 +98,12 @@ public class WarehouseOrderRepository
                     ? details.ToImmutableList()
                     : ImmutableList<WarehouseOrderPart>.Empty,
                 order.acceptingemployeeid,
-                order.deliveredat))
-            .ToList();
+                order.deliveredat));
 
         return orders;
     }
 
-    public async Task<List<WarehouseOrderModel>> GetAllWarehouseOrdersAsync()
+    public async Task<IEnumerable<WarehouseOrderModel>> GetAllWarehouseOrdersAsync(PermissionsModel? permissionsModel)
     {
         const string ordersQuery = """
                                    SELECT
@@ -123,7 +127,8 @@ public class WarehouseOrderRepository
                                     JOIN "Produkt" p ON p.id_produktu = zdm.id_produktu
                                     """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+        using var connection = _context.CreateUserConnection(permissionsModel);
 
         var ordersResult = await connection.QueryAsync(ordersQuery);
         var detailsResults = await connection.QueryAsync(detailsQuery);
@@ -146,27 +151,22 @@ public class WarehouseOrderRepository
                     ? details.ToImmutableList()
                     : ImmutableList<WarehouseOrderPart>.Empty,
                 order.acceptingemployeeid,
-                order.deliveredat))
-            .ToList();
+                order.deliveredat));
 
         return orders;
     }
 
-    public async Task AddWarehouseOrderAsync(WarehouseOrderModel order)
+    public async Task AddWarehouseOrderAsync(WarehouseOrderModel order, PermissionsModel? permissionsModel)
     {
         const string insertOrderQuery = """
                                         INSERT INTO "Zamowienie_do_magazynu"(
                                              data_zlozenia,
-                                             data_zrealizowania,
                                              id_pracownika_zamawiajacego, 
-                                             id_pracownika_przyjmujacego,
                                              cena_sumaryczna
                                         )
                                         VALUES (
                                              @PlacedAt,
-                                             @DeliveredAt,
                                              @OrderingEmployeeId,
-                                             @AcceptingEmployeeId, 
                                              @TotalPrice
                                         )
                                         RETURNING id_zamowienia;
@@ -177,7 +177,8 @@ public class WarehouseOrderRepository
                                             VALUES (@OrderId, @ProductId, @Amount, @Price);
                                             """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+        using var connection = _context.CreateUserConnection(permissionsModel);
         connection.Open();
 
         using var transaction = connection.BeginTransaction();
@@ -187,7 +188,8 @@ public class WarehouseOrderRepository
             var orderId = await connection.ExecuteScalarAsync<int>(insertOrderQuery,
                 new
                 {
-                    order.PlacedAt, order.DeliveredAt, order.OrderingEmployeeId, order.AcceptingEmployeeId,
+                    order.PlacedAt,
+                    order.OrderingEmployeeId,
                     order.TotalPrice
                 }, transaction);
 

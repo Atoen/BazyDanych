@@ -2,6 +2,7 @@
 @using BazyDanych.Components.Layout
 @using BazyDanych.Data.Models
 @using BazyDanych.Repositories
+@using BazyDanych.Services
 @layout ReportLayout
 
 <RequireLoggedIn RequiredPermissions="[PermissionsModel.Manager]"/>
@@ -84,6 +85,7 @@ else
 }
 
 @inject WarehouseOrderRepository WarehouseOrderRepository
+@inject UserService UserService
 
 @code {
     
@@ -94,7 +96,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _warehouseOrderModels = await WarehouseOrderRepository.GetAllWarehouseOrdersAsync();
+        _warehouseOrderModels = await WarehouseOrderRepository.GetAllWarehouseOrdersAsync(UserService.EmployeePermissions);
     }
     
     private Task ShowOrderDetails(WarehouseOrderModel warehouseOrderModel)

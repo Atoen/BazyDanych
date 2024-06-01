@@ -60,11 +60,4 @@ public class UserService
         _logger.LogInformation("User logged out");
         
     }
-
-    public IDbConnection CreateUserConnection()
-    {
-        ArgumentNullException.ThrowIfNull(_credentials);
-
-        return _context.CreateUserConnection(_credentials);
-    }
 }

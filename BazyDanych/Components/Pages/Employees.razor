@@ -65,6 +65,7 @@ else
 
 @inject RedirectManager RedirectManager
 @inject EmployeeRepository EmployeeRepository
+@inject UserService UserService
 
 @code {
     private Modal _modal = default!;
@@ -99,7 +100,7 @@ else
             { nameof(AddEmployeeModal.AddEmployeeCallback), EventCallback.Factory.Create<EmployeeModel>(this, EmployeeAdded) }
         };
         
-        _employees = await EmployeeRepository.GetAllEmployeeModelsAsync();
+        _employees = await EmployeeRepository.GetAllEmployeeModelsAsync(UserService.EmployeePermissions);
     }
 
     private Task EditEmployee(EmployeeModel employee)
@@ -111,7 +112,7 @@ else
     private async Task EmployeeModified(EmployeeModel employee)
     {
         await _modal.HideAsync();
-        await EmployeeRepository.ModifyEmployeeAsync(employee);
+        await EmployeeRepository.ModifyEmployeeAsync(employee, UserService.EmployeePermissions);
         
         var modifiedEmployee = _employees?.FirstOrDefault(x => x.Id == employee.Id);
         if (modifiedEmployee is null) return;
@@ -144,7 +145,7 @@ else
     private async Task EmployeeAdded(EmployeeModel employee)
     {
         await _modal.HideAsync();
-        var employeeId = await EmployeeRepository.AddEmployeeAsync(employee);
+        var employeeId = await EmployeeRepository.AddEmployeeAsync(employee, UserService.EmployeePermissions);
         employee.Id = employeeId;
         
         _employees = _employees?.Concat([employee]);

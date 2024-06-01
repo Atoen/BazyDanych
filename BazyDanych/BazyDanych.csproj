@@ -36,7 +36,6 @@
     <AdditionalFiles Include="Components\Pages\EditMenu.razor" />
     <AdditionalFiles Include="Components\Pages\Home.razor" />
     <AdditionalFiles Include="Components\Pages\Login.razor" />
-    <AdditionalFiles Include="Components\Pages\Products.razor" />
     <AdditionalFiles Include="Components\Pages\Unauthorized.razor" />
   </ItemGroup>
 

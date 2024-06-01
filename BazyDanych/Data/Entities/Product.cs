@@ -19,4 +19,6 @@ public class Product
     [Column("jednostka")] public string Unit { get; set; } = string.Empty;
 
     [Column("kategoria")] public string Category { get; set; } = string.Empty;
+
+    [NotMapped] public string AutoCompleteListName => AvailableQuantity > 0 ? Name : $"{Name} - Brak na stanie";
 }

@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddControllers();
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<ProductRepository>();
@@ -33,7 +32,5 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-app.MapControllers();
 
 app.Run();

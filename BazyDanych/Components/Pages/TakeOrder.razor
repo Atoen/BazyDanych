@@ -21,10 +21,11 @@
     <div class="col-md-5">
         <label class="form-label">Produkt</label>
         <AutoComplete @bind-Value="_selectedProductName"
+                      @ref="_autoComplete"
                       TItem="Product"
                       DataProvider="ProductDataProvider"
                       Placeholder="Wyszukaj produkt"
-                      PropertyName="Name"
+                      PropertyName="AutoCompleteListName"
                       LoadingText="Ładowanie..."
                       EmptyText="Nie znaleziono produktów."
                       OnChanged="OnAutoCompleteChanged">
@@ -33,7 +34,8 @@
     <div class="col-md-2">
         <label class="form-label">Liczba</label>
         <NumberInput TValue="int" @bind-Value="@_amount" Placeholder="Podaj ilość w zamówieniu"
-                     AllowNegativeNumbers="false" Min="0" EnableMinMax="true" Max="int.MaxValue"/>
+                     AllowNegativeNumbers="false" Min="0" EnableMinMax="true" 
+                     Max="@MaximumProductCount()"/>
     </div>
     <div class="col-md-2 pe-none">
         <label class="form-label">Cena sumaryczna</label>
@@ -43,7 +45,7 @@
 </div>
 
 <div class="d-flex my-3" style="gap: 10px">
-    <Button Color="ButtonColor.Success" @onclick="AddOrder">Dodaj produkty</Button>
+    <Button Color="ButtonColor.Success" @onclick="AddPart">Dodaj produkty</Button>
     <Button Color="ButtonColor.Warning" @onclick="PlaceOrder">Złóż zamówienie</Button>
 </div>
 
@@ -61,17 +63,17 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var order in _orders)
+        @foreach (var part in _parts)
         {
         <tr>
-            <td @onclick="() => DeleteOrder(order)" @onclick:stopPropagation="true">
+            <td @onclick="() => DeleteOrder(part)" @onclick:stopPropagation="true">
                 <div class="delete-icon">
                     <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
                 </div>
             </td>
-            <td>@order.Product.Name</td>
-            <td>@order.Amount</td>
-            <td>@order.Price</td>
+            <td>@part.Product.Name</td>
+            <td>@part.Amount</td>
+            <td>@part.Price</td>
         </tr>
         }
         </tbody>
@@ -81,8 +83,10 @@
 @inject RedirectManager RedirectManager
 @inject ProductRepository ProductRepository
 @inject ClientOrderRepository ClientOrderRepository
+@inject UserService UserService
 
 @code {
+    private AutoComplete<Product> _autoComplete = default!;
     
     private string? _selectedProductName;
     private Product? _selectedProduct;
@@ -100,18 +104,29 @@
         NoButtonColor = ButtonColor.Danger,
         AutoFocusYesButton = false
     };
+
+    private int MaximumProductCount()
+    {
+        if (_selectedProduct is not { } product) return 0;
+
+        var amountInParts = _parts
+            .Where(x => x.Product == product)
+            .Sum(x => x.Amount);
+
+        return product.AvailableQuantity - amountInParts;
+    }
     
-    private readonly List<ClientOrderPart> _orders = [];
+    private readonly List<ClientOrderPart> _parts = [];
     private IEnumerable<Product>? _cachedProducts;
     
     private async Task<AutoCompleteDataProviderResult<Product>> ProductDataProvider(AutoCompleteDataProviderRequest<Product> request)
     {
-        _cachedProducts ??= await ProductRepository.GetProductsAsync();
+        _cachedProducts ??= await ProductRepository.GetProductsAsync(UserService.EmployeePermissions);
 
         return request.ApplyTo(_cachedProducts.OrderBy(x => x.Name));
     }
     
-    private void AddOrder()
+    private void AddPart()
     {
         _statusMessageData = null;
         
@@ -121,13 +136,16 @@
             return;
         }
         
-        _orders.Add(new ClientOrderPart(_selectedProduct, _amount, _selectedProduct.Price * _amount));
-        _totalPrice = _orders.Sum(x => x.Price);
+        _parts.Add(new ClientOrderPart(_selectedProduct, _amount, _selectedProduct.Price * _amount));
+        _totalPrice = _parts.Sum(x => x.Price);
+        
+        var maxCount = MaximumProductCount();
+        if (_amount > maxCount) _amount = maxCount;
     }
     
     private void DeleteOrder(ClientOrderPart order)
     {
-        _orders.Remove(order);
+        _parts.Remove(order);
     }
     
     private void OnAutoCompleteChanged(Product? product)
@@ -143,14 +161,15 @@
         _selectedProductName = null;
         _totalPrice = 0;
         _amount = 0;
-        _orders.Clear();
+        _parts.Clear();
+        _cachedProducts = null;
     }
     
     private async Task PlaceOrder()
     {
-        if (_orders.Count == 0) return;
+        if (_parts.Count == 0) return;
         
-        var productCount = _orders.Sum(x => x.Amount);
+        var productCount = _parts.Sum(x => x.Amount);
         var confirmation = await _dialog.ShowAsync(
             title: "Złóż zamówienie",
             message1: $"Czy zamówienie za {_totalPrice} zł składające się z {productCount} produktów jest poprawne?",
@@ -159,10 +178,11 @@
         if (!confirmation) return;
 
         // total price calculated by trigger
-        var clientOrder = new ClientOrderModel(0, DateTime.Now, 0, _orders.ToImmutableList());
-        await ClientOrderRepository.AddClientOrderAsync(clientOrder);
+        var clientOrder = new ClientOrderModel(0, DateTime.Now, 0, _parts.ToImmutableList());
+        await ClientOrderRepository.AddClientOrderAsync(clientOrder, UserService.EmployeePermissions);
         
         ClearData();
+        await _autoComplete.RefreshDataAsync();
     }
     
     private void GoBack() => RedirectManager.RedirectTo("/");

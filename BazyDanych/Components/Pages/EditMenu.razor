@@ -64,6 +64,7 @@ else
 
 @inject ProductRepository ProductRepository
 @inject RedirectManager RedirectManager
+@inject UserService UserService
 
 @code {
     private Modal _modal = default!;
@@ -98,7 +99,7 @@ else
             { nameof(AddProductModal.CreateProductCallback), EventCallback.Factory.Create<Product>(this, ProductAdded) }
         };
 
-        _products = await ProductRepository.GetProductsAsync();
+        _products = await ProductRepository.GetProductsAsync(UserService.EmployeePermissions);
     }
 
     private Task EditProduct(Product product)
@@ -110,7 +111,7 @@ else
     private async Task ProductModified(Product product)
     {
         await _modal.HideAsync();
-        await ProductRepository.ModifyProductAsync(product);
+        await ProductRepository.ModifyProductAsync(product, UserService.EmployeePermissions);
 
         var modifiedProduct = _products?.FirstOrDefault(x => x.Id == product.Id);
         if (modifiedProduct is null) return;
@@ -131,7 +132,7 @@ else
 
         if (!confirmation) return;
 
-        await ProductRepository.DeleteProductAsync(productToDelete.Id);
+        await ProductRepository.DeleteProductAsync(productToDelete.Id, UserService.EmployeePermissions);
         _products = _products?.Where(x => x.Id != productToDelete.Id);
     }
 
@@ -143,7 +144,7 @@ else
     private async Task ProductAdded(Product productToAdd)
     {
         await _modal.HideAsync();
-        var productId = await ProductRepository.CreateProductAsync(productToAdd);
+        var productId = await ProductRepository.CreateProductAsync(productToAdd, UserService.EmployeePermissions);
         productToAdd.Id = productId;
         
         _products = _products?.Concat([productToAdd]);

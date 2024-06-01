@@ -121,7 +121,7 @@ else
     {
         _showFullInfo = UserService.EmployeePermissions is not { Permissions: PermissionsModel.SalesmanPermission };
         
-        var pendingOrders = await WarehouseOrderRepository.GetPendingWarehouseOrdersAsync();
+        var pendingOrders = await WarehouseOrderRepository.GetPendingWarehouseOrdersAsync(UserService.EmployeePermissions);
         _pendingOrders = _showFullInfo ? pendingOrders : pendingOrders.Where(x => x.DeliveredAt is not null);
     }
 
@@ -133,7 +133,7 @@ else
 
     private async Task MarkAsDelivered(WarehouseOrderModel warehouseOrderModel)
     {
-        await WarehouseOrderRepository.MarkAsDeliveredAsync(warehouseOrderModel);
+        await WarehouseOrderRepository.MarkAsDeliveredAsync(warehouseOrderModel, UserService.EmployeePermissions);
         await _modal.HideAsync();
     }
     

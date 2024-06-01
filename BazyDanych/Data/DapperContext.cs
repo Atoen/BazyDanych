@@ -9,30 +9,45 @@ namespace BazyDanych.Data;
 
 public class DapperContext
 {
-    private const string ConnectionStringName = "Postgres";
-    private const string TemplateConnectionStringName = "Template";
+    private const string RootConnectionStringName = "Postgres";
+    private const string ManagerConnectionStringName = "Manager";
+    private const string WarehouseConnectionStringName = "Warehouse";
+    private const string SalesConnectionStringName = "Sales";
 
-    private readonly string _connectionString;
-    private readonly string _templateConnectionString;
+    private readonly string _rootConnectionString;
+    private readonly string _managerConnectionString;
+    private readonly string _warehouseConnectionString;
+    private readonly string _salesConnectionString;
     
     public DapperContext(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString(ConnectionStringName)
-                            ?? throw new ArgumentNullException(nameof(configuration),
-                                $"Connection string '{ConnectionStringName}' is missing in configuration file");
-        
-        _templateConnectionString = configuration.GetConnectionString(TemplateConnectionStringName)
-                            ?? throw new ArgumentNullException(nameof(configuration),
-                                $"Connection string '{TemplateConnectionStringName}' is missing in configuration file");
+        string GetConnectionStringOrThrow(string connectionStringName)
+        {
+            return configuration.GetConnectionString(connectionStringName)
+                   ?? throw new ArgumentNullException(nameof(configuration),
+                       $"Connection string '{connectionStringName}' is missing in configuration file");
+        }
+
+        _rootConnectionString = GetConnectionStringOrThrow(RootConnectionStringName);
+        _managerConnectionString = GetConnectionStringOrThrow(ManagerConnectionStringName);
+        _warehouseConnectionString = GetConnectionStringOrThrow(WarehouseConnectionStringName);
+        _salesConnectionString = GetConnectionStringOrThrow(SalesConnectionStringName);
         
         ConfigureDapperMappings();
     }
 
-    public IDbConnection CreateRootConnection() => new NpgsqlConnection(_connectionString);
+    public IDbConnection CreateRootConnection() => new NpgsqlConnection(_rootConnectionString);
 
-    public IDbConnection CreateUserConnection(UserCredentials credentials)
+    public IDbConnection CreateUserConnection(PermissionsModel permissionsModel)
     {
-        var connectionString = string.Format(_templateConnectionString, credentials.Username, credentials.Password);
+        var connectionString = permissionsModel.Permissions switch
+        {
+            PermissionsModel.ManagerPermission => _managerConnectionString,
+            PermissionsModel.WarehousemanPermission => _warehouseConnectionString,
+            PermissionsModel.SalesmanPermission => _salesConnectionString,
+            _ => throw new InvalidOperationException()
+        };
+
         return new NpgsqlConnection(connectionString);
     }
 

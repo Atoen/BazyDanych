@@ -1,5 +1,6 @@
 using BazyDanych.Data;
 using BazyDanych.Data.Entities;
+using BazyDanych.Data.Models;
 using Dapper;
 
 namespace BazyDanych.Repositories;
@@ -12,41 +13,36 @@ public class ProductRepository
     {
         _context = context;
     }
-
-    public async Task<IEnumerable<Product>> GetProductsAsync()
+    
+    public async Task<IEnumerable<Product>> GetProductsAsync(PermissionsModel? permissionsModel)
     {
         const string query = """
                              SELECT * FROM "Produkt"
                              ORDER BY id_produktu
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+        
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         return await connection.QueryAsync<Product>(query);
     }
     
     
-    public async Task<IEnumerable<WarehouseProductStatus>> GetWarehouseProductStatusAsync()
+    public async Task<IEnumerable<WarehouseProductStatus>> GetWarehouseProductStatusAsync(PermissionsModel? permissionsModel)
     {
         const string query = """
                              SELECT * FROM "Stan_magazynu_z_oczekującymi_zamowieniami"
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         return await connection.QueryAsync<WarehouseProductStatus>(query);
     }
-
-    public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
-    {
-        const string query = """
-                             SELECT *
-                             FROM "Produkt" 
-                             WHERE LOWER(nazwa) LIKE '%' || LOWER(@Name) || '%'
-                             """;
-        using var connection = _context.CreateRootConnection();
-        return await connection.QueryAsync<Product>(query, new { name });
-    }
     
-    public async Task ModifyProductAsync(Product product)
+    public async Task ModifyProductAsync(Product product, PermissionsModel? permissionsModel)
     {
         const string query = """
                                 UPDATE "Produkt"
@@ -61,11 +57,14 @@ public class ProductRepository
                                     id_produktu = @Id
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         await connection.ExecuteAsync(query, product);
     }
     
-    public async Task<int> CreateProductAsync(Product product)
+    public async Task<int> CreateProductAsync(Product product, PermissionsModel? permissionsModel)
     {
         const string query = """
                             INSERT INTO "Produkt"(
@@ -88,20 +87,25 @@ public class ProductRepository
                             RETURNING "id_produktu"
                             """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return 0;
+        
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         var productId = await connection.ExecuteScalarAsync<int>(query, product);
-
         return productId;
     }
     
-    public async Task DeleteProductAsync(int productId)
+    public async Task DeleteProductAsync(int productId, PermissionsModel? permissionsModel)
     {
         const string query = """
                                 DELETE FROM "Produkt"
                                 WHERE id_produktu = @Id
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+        
+        using var connection = _context.CreateUserConnection(permissionsModel);
+        
         await connection.ExecuteAsync(query, new { Id = productId });
     }
 }

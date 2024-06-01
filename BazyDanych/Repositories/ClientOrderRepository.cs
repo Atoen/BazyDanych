@@ -15,7 +15,7 @@ public class ClientOrderRepository
         _context = context;
     }
 
-    public async Task<List<ClientOrderModel>> GetAllClientOrdersAsync()
+    public async Task<IEnumerable<ClientOrderModel>> GetAllClientOrdersAsync(PermissionsModel? permissionsModel)
     {
         const string ordersQuery = """
                                    SELECT
@@ -36,7 +36,9 @@ public class ClientOrderRepository
                                     JOIN "Produkt" p on p.id_produktu = zks.id_produktu
                                     """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+
+        using var connection = _context.CreateUserConnection(permissionsModel);
 
         var ordersResult = await connection.QueryAsync(ordersQuery);
         var detailsResults = await connection.QueryAsync(detailsQuery);
@@ -54,16 +56,15 @@ public class ClientOrderRepository
                 order.id,
                 order.takenat,
                 order.totalprice,
-                orderDetailsMap.TryGetValue((int) order.id, out var details) 
-                    ? details.ToImmutableList() 
+                orderDetailsMap.TryGetValue((int) order.id, out var details)
+                    ? details.ToImmutableList()
                     : ImmutableList<ClientOrderPart>.Empty
-            ))
-            .ToList();
+            ));
 
         return orders;
     }
 
-    public async Task AddClientOrderAsync(ClientOrderModel order)
+    public async Task AddClientOrderAsync(ClientOrderModel order, PermissionsModel? permissionsModel)
     {
         const string insertOrderQuery = """
                                         INSERT INTO "zamowienie_klienta" (data_zlozenia, cena_sumaryczna)
@@ -76,7 +77,17 @@ public class ClientOrderRepository
                                             VALUES (@OrderId, @ProductId, @Amount, @Price);
                                             """;
 
-        using var connection = _context.CreateRootConnection();
+        const string reduceProductCountQuery = """
+                                               UPDATE "Produkt"
+                                               SET
+                                                   dostepna_ilosc = dostepna_ilosc - @Amount
+                                               WHERE
+                                                   id_produktu = @ProductId;
+                                               """;
+
+        if (permissionsModel is null) return;
+        
+        using var connection = _context.CreateUserConnection(permissionsModel);
         connection.Open();
 
         using var transaction = connection.BeginTransaction();
@@ -96,6 +107,15 @@ public class ClientOrderRepository
                         ProductId = part.Product.Id,
                         part.Amount,
                         part.Price
+                    },
+                    transaction);
+
+                await connection.ExecuteAsync(
+                    reduceProductCountQuery,
+                    new
+                    {
+                        ProductId = part.Product.Id,
+                        part.Amount
                     },
                     transaction);
             }

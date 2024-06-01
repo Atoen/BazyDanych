@@ -49,13 +49,14 @@ else
 
 @inject RedirectManager RedirectManager
 @inject ProductRepository ProductRepository
+@inject UserService UserService
 
 @code {
     private IEnumerable<WarehouseProductStatus>? _productsStatuses;
 
     protected override async Task OnInitializedAsync()
     {
-        _productsStatuses = await ProductRepository.GetWarehouseProductStatusAsync();
+        _productsStatuses = await ProductRepository.GetWarehouseProductStatusAsync(UserService.EmployeePermissions);
     }
 
     private void GoBack() => RedirectManager.RedirectTo("/");

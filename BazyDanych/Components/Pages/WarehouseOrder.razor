@@ -117,7 +117,7 @@
 
     private async Task<AutoCompleteDataProviderResult<Product>> ProductDataProvider(AutoCompleteDataProviderRequest<Product> request)
     {
-        _cachedProducts ??= await ProductRepository.GetProductsAsync();
+        _cachedProducts ??= await ProductRepository.GetProductsAsync(UserService.EmployeePermissions);
 
         return request.ApplyTo(_cachedProducts.OrderBy(x => x.Name));
     }
@@ -178,7 +178,7 @@
 
         var warehouseOrder = new WarehouseOrderModel(
             0, DateTime.Now, orderingEmployeeId, _totalPrice, _orders.ToImmutableList());
-        await WarehouseOrderRepository.AddWarehouseOrderAsync(warehouseOrder);
+        await WarehouseOrderRepository.AddWarehouseOrderAsync(warehouseOrder, UserService.EmployeePermissions);
 
         ClearData();
     }

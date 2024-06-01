@@ -14,7 +14,7 @@ public class EmployeeRepository
         _context = context;
     }
 
-    public async Task<List<EmployeeModel>> GetAllEmployeeModelsAsync()
+    public async Task<IEnumerable<EmployeeModel>> GetAllEmployeeModelsAsync(PermissionsModel? permissionsModel)
     {
         const string query = """
                                  SELECT
@@ -34,7 +34,8 @@ public class EmployeeRepository
                                  ORDER BY e.id_pracownika
                              """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return [];
+        using var connection = _context.CreateUserConnection(permissionsModel);
 
         var results = await connection.QueryAsync(query);
         var employees = new List<EmployeeModel>();
@@ -88,7 +89,7 @@ public class EmployeeRepository
         return employee;
     }
 
-    public async Task ModifyEmployeeAsync(EmployeeModel employee)
+    public async Task ModifyEmployeeAsync(EmployeeModel employee, PermissionsModel? permissionsModel)
     {
         const string employeeQuery = """
                                      UPDATE public."Pracownik"
@@ -111,7 +112,8 @@ public class EmployeeRepository
                                          id_stanowiska = @PositionId
                                      """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+        using var connection = _context.CreateUserConnection(permissionsModel);
         connection.Open();
 
         using var transaction = connection.BeginTransaction();
@@ -146,7 +148,7 @@ public class EmployeeRepository
         }
     }
 
-    public async Task<int> AddEmployeeAsync(EmployeeModel employee)
+    public async Task<int> AddEmployeeAsync(EmployeeModel employee, PermissionsModel? permissionsModel)
     {
         const string employeeInsertQuery = """
                                            INSERT INTO public."Pracownik" (imie, drugie_imie, nazwisko, login, haslo, id_stanowiska)
@@ -160,7 +162,9 @@ public class EmployeeRepository
                                            RETURNING id_stanowiska
                                            """;
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return 0;
+        
+        using var connection = _context.CreateUserConnection(permissionsModel);
         connection.Open();
 
         using var transaction = connection.BeginTransaction();
@@ -195,11 +199,12 @@ public class EmployeeRepository
         }
     }
     
-    public async Task ChangePasswordAsync(int employeeId, string oldPassword, string newPassword)
+    public async Task ChangePasswordAsync(int employeeId, string oldPassword, string newPassword, PermissionsModel? permissionsModel)
     {
         const string procedure = "zmiana_hasla";
 
-        using var connection = _context.CreateRootConnection();
+        if (permissionsModel is null) return;
+        using var connection = _context.CreateUserConnection(permissionsModel);
         var parameters = new
         {
             id_temp = employeeId,
