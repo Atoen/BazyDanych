@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using BazyDanych.Data.Entities;
 
 namespace BazyDanych.Data.Models;

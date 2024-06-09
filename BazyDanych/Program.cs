@@ -18,6 +18,7 @@ builder.Services.AddScoped<WarehouseOrderRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<MenuOptionsProvider>();
 builder.Services.AddScoped<RedirectManager>();
+builder.Services.AddTransient<PasswordHasher>();
 
 var app = builder.Build();
 

@@ -1,5 +1,3 @@
-using System.Data;
-using BazyDanych.Data;
 using BazyDanych.Data.Models;
 using BazyDanych.Data.Resutls;
 using BazyDanych.Repositories;
@@ -13,21 +11,16 @@ public class UserService
     public EmployeeModel? Employee { get; private set; }
     public PermissionsModel? EmployeePermissions => Employee?.Position.Permissions;
 
-    private UserCredentials? _credentials;
-    
     private readonly EmployeeRepository _employeeRepository;
-    private readonly DapperContext _context;
     private readonly RedirectManager _redirectManager;
     private readonly ILogger<UserService> _logger;
 
     public UserService(
         EmployeeRepository employeeRepository,
-        DapperContext context,
         RedirectManager redirectManager,
         ILogger<UserService> logger)
     {
         _employeeRepository = employeeRepository;
-        _context = context;
         _redirectManager = redirectManager;
         _logger = logger;
     }
@@ -39,8 +32,7 @@ public class UserService
         {
             return LoginResult.Failed;
         }
-        
-        _credentials = credentials;
+
         Employee = result;
         IsAuthenticated = true;
         
@@ -52,8 +44,7 @@ public class UserService
     public void Logout()
     {
         _redirectManager.RedirectToLogin();
-        
-        _credentials = null;
+
         Employee = null;
         IsAuthenticated = false;
         

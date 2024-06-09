@@ -1,6 +1,7 @@
 using System.Data;
 using BazyDanych.Data;
 using BazyDanych.Data.Models;
+using BazyDanych.Services;
 using Dapper;
 
 namespace BazyDanych.Repositories;
@@ -8,10 +9,12 @@ namespace BazyDanych.Repositories;
 public class EmployeeRepository
 {
     private readonly DapperContext _context;
+    private readonly PasswordHasher _passwordHasher;
 
-    public EmployeeRepository(DapperContext context)
+    public EmployeeRepository(DapperContext context, PasswordHasher passwordHasher)
     {
         _context = context;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<IEnumerable<EmployeeModel>> GetAllEmployeeModelsAsync(PermissionsModel? permissionsModel)
@@ -75,7 +78,15 @@ public class EmployeeRepository
 
         using var connection = _context.CreateRootConnection();
 
-        var result = await connection.QueryFirstOrDefaultAsync(query, credentials);
+        var param = new
+        {
+            credentials.Username,
+            Password = _passwordHasher.HashPassword(credentials.Password)
+        };
+        
+        
+        var result = await connection.QueryFirstOrDefaultAsync(query, param);
+        
         if (result is null)
         {
             return null;
@@ -97,7 +108,8 @@ public class EmployeeRepository
                                          imie = @FirstName,
                                          drugie_imie = @SecondName,
                                          nazwisko = @LastName,
-                                         login = @Login
+                                         login = @Login,
+                                         haslo = @Password
                                      WHERE
                                          id_pracownika = @Id
                                      """;
@@ -126,7 +138,8 @@ public class EmployeeRepository
                 employee.SecondName,
                 employee.LastName,
                 employee.Login,
-                employee.Id
+                employee.Id,
+                Password = _passwordHasher.HashPassword(employee.Password)
             }, transaction);
 
             await connection.ExecuteAsync(positionQuery, new
@@ -208,8 +221,8 @@ public class EmployeeRepository
         var parameters = new
         {
             id_temp = employeeId,
-            stare_haslo = oldPassword,
-            nowe_haslo = newPassword
+            stare_haslo = _passwordHasher.HashPassword(oldPassword),
+            nowe_haslo = _passwordHasher.HashPassword(newPassword)
         };
 
         await connection.ExecuteAsync(procedure, parameters, commandType: CommandType.StoredProcedure);

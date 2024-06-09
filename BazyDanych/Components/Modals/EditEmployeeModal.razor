@@ -118,7 +118,7 @@
         _newSecondName = ModifiedEmployee.SecondName;
         _newLastName = ModifiedEmployee.LastName;
         _newLogin = ModifiedEmployee.Login;
-        _newPassword = ModifiedEmployee.Password;
+        _newPassword = string.Empty;
         
         _newSalary = ModifiedEmployee.Position.Salary;
         _newPosition = ModifiedEmployee.Position.Name;
@@ -156,8 +156,8 @@
                              _newLogin == ModifiedEmployee.Login &&
                              _newPermissions == ModifiedEmployee.Position.Permissions &&
                              _newPosition == ModifiedEmployee.Position.Name &&
-                             _newPassword == ModifiedEmployee.Password &&
-                             _newSalary == ModifiedEmployee.Position.Salary;
+                             _newSalary == ModifiedEmployee.Position.Salary &&
+                             _newPassword == string.Empty;
         
         if (invalidProperties)
         {
