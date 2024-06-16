@@ -84,7 +84,10 @@
         var invalidProperties = string.IsNullOrEmpty(_newName) || 
                                 string.IsNullOrEmpty(_newCategory) || 
                                 string.IsNullOrEmpty(_newUnit) ||
-                                _newPrice <= 0;
+                                _newName.Length > 40 ||
+                                _newCategory.Length > 20 ||
+                                _newUnit.Length > 20 ||
+                                _newPrice is <= 0 or >= 10e7m;
 
         if (invalidProperties)
         {

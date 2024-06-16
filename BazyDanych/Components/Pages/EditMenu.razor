@@ -10,7 +10,6 @@
 <PageTitle>Edycja menu</PageTitle>
 
 <Modal @ref="_modal"/>
-<ConfirmDialog @ref="_dialog"/>
 
 <h3>Edycja menu</h3>
 
@@ -31,7 +30,6 @@ else
         <table class="table products-table">
             <thead>
             <tr>
-                <th/>
                 <th>Nazwa</th>
                 <th>Kategoria</th>
                 <th>Cena</th>
@@ -44,11 +42,6 @@ else
             @foreach (var product in _products)
             {
                 <tr @onclick="() => EditProduct(product)">
-                    <td @onclick="() => DeleteProduct(product)" @onclick:stopPropagation="true">
-                        <div class="delete-icon">
-                            <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
-                        </div>
-                    </td>
                     <td>@product.Name</td>
                     <td>@product.Category</td>
                     <td>@product.Price</td>
@@ -70,16 +63,6 @@ else
     private Modal _modal = default!;
     private Dictionary<string, object> _editModalParameters = default!;
     private Dictionary<string, object> _createModalParameters = default!;
-
-    private ConfirmDialog _dialog = default!;
-    private readonly ConfirmDialogOptions _dialogOptions = new()
-    {
-        YesButtonText = "Tak",
-        YesButtonColor = ButtonColor.Danger,
-        NoButtonText = "Anuluj",
-        NoButtonColor = ButtonColor.Secondary,
-        AutoFocusYesButton = false
-    };
 
     private IEnumerable<Product>? _products;
     
@@ -120,20 +103,6 @@ else
         modifiedProduct.Name = product.Name;
         modifiedProduct.Unit = product.Unit;
         modifiedProduct.Category = product.Category;
-    }
-    
-    private async Task DeleteProduct(Product productToDelete)
-    {
-        var confirmation = await _dialog.ShowAsync(
-            title: "Usuń produkt",
-            message1: $"Usunięcie produktu {productToDelete.Name} z menu jest nieodwracalne.",
-            message2: "Czy na pewno chcesz kontynuować?",
-            confirmDialogOptions: _dialogOptions);
-
-        if (!confirmation) return;
-
-        await ProductRepository.DeleteProductAsync(productToDelete.Id, UserService.EmployeePermissions);
-        _products = _products?.Where(x => x.Id != productToDelete.Id);
     }
 
     private Task AddProduct()

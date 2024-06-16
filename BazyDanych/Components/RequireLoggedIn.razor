@@ -5,7 +5,8 @@
 {
     <RedirectToLogin />
 }
-else if (RequiredPermissions is not null && !RequiredPermissions.Contains(UserService.EmployeePermissions!))
+else if (RequiredPermissions is not null 
+         && !RequiredPermissions.Contains(UserService.EmployeePermissions!))
 {
     <RedirectToUnauthorized />
 }

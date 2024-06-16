@@ -130,9 +130,13 @@
                                 string.IsNullOrEmpty(_newLastName) ||
                                 string.IsNullOrEmpty(_newLogin) ||
                                 string.IsNullOrEmpty(_newPassword) || 
-                                _newSalary <= 0 ||
-                                _permissions is null ||
-                                string.IsNullOrEmpty(_position);
+                                string.IsNullOrEmpty(_position) ||
+                                _newLogin.Length > 40 ||
+                                _newFirstName.Length > 40 ||
+                                _newSecondName?.Length > 40 ||
+                                _newLastName.Length > 40 ||
+                                _position.Length > 40 ||
+                                _newSalary is <= 0 or >= 10e7m;
 
         if (invalidProperties)
         {

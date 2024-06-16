@@ -1,9 +1,15 @@
+using System.Net;
 using BazyDanych.Components;
 using BazyDanych.Data;
 using BazyDanych.Repositories;
 using BazyDanych.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// builder.WebHost.UseKestrel(options =>
+// {
+//     options.Listen(IPAddress.Any, 500);
+// });
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

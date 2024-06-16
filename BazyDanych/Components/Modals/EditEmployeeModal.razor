@@ -1,4 +1,3 @@
-
 @using BazyDanych.Data.Models
 
 <StatusMessage Data="_statusMessageData"/>
@@ -8,7 +7,7 @@
         <label for="employeeFirstName" class="form-label">Imię</label>
     </div>
     <div class="col-md-9">
-        <InputText id="employeeFirstName" @bind-Value="_newFirstName" Placeholder="Wprowadź imię pracownika" class="form-control" />
+        <InputText id="employeeFirstName" @bind-Value="_newFirstName" Placeholder="Wprowadź imię pracownika" class="form-control"/>
     </div>
 </div>
 
@@ -17,8 +16,8 @@
         <label for="employeeSecondName" class="form-label">Drugie imię</label>
     </div>
     <div class="col-md-9">
-        <InputText id="employeeSecondName" @bind-Value="_newSecondName" Placeholder="Wprowadź drugie pracownika" 
-                   class="form-control" />
+        <InputText id="employeeSecondName" @bind-Value="_newSecondName" Placeholder="Wprowadź drugie pracownika"
+                   class="form-control"/>
     </div>
 </div>
 
@@ -27,7 +26,7 @@
         <label for="employeeLastName" class="form-label">Nazwisko</label>
     </div>
     <div class="col-md-9">
-        <InputText id="employeeLastName" @bind-Value="_newLastName" Placeholder="Wprowadź nazwisko pracownika" class="form-control" />
+        <InputText id="employeeLastName" @bind-Value="_newLastName" Placeholder="Wprowadź nazwisko pracownika" class="form-control"/>
     </div>
 </div>
 
@@ -36,7 +35,7 @@
         <label for="employeeLogin" class="form-label">Login</label>
     </div>
     <div class="col-md-9">
-        <InputText id="employeeLogin" @bind-Value="_newLogin" Placeholder="Wprowadź login pracownika" class="form-control" />
+        <InputText id="employeeLogin" @bind-Value="_newLogin" Placeholder="Wprowadź login pracownika" class="form-control"/>
     </div>
 </div>
 
@@ -45,8 +44,8 @@
         <label for="employeeLogin" class="form-label">Hasło</label>
     </div>
     <div class="col-md-9">
-        <InputText id="employeePassword" @bind-Value="_newPassword" Placeholder="Wprowadź hasło pracownika" 
-                   class="form-control" type="password" />
+        <InputText id="employeePassword" @bind-Value="_newPassword" Placeholder="Wprowadź hasło pracownika"
+                   class="form-control" type="password"/>
     </div>
 </div>
 
@@ -70,9 +69,9 @@
         <DropdownMenu>
             @foreach (var permissions in PermissionsModel.AllPermissions)
             {
-            <DropdownItem Type="ButtonType.Button" @onclick="() => _newPermissions = permissions">
-                @permissions.Permissions
-            </DropdownItem>
+                <DropdownItem Type="ButtonType.Button" @onclick="() => _newPermissions = permissions">
+                    @permissions.Permissions
+                </DropdownItem>
             }
         </DropdownMenu>
     </Dropdown>
@@ -85,7 +84,7 @@
     <div class="col-md-9">
         <CurrencyInput id="employeeSalary" TValue="decimal" @bind-Value="_newSalary" AllowNegativeNumbers="false"
                        MinimumIntegerDigits="1" MinimumFractionDigits="2" MaximumFractionDigits="2"
-                       Placeholder="Wprowadź nowe wynagrodzenie pracownika" Locale="pl-pl" class="form-control" />
+                       Placeholder="Wprowadź nowe wynagrodzenie pracownika" Locale="pl-pl" class="form-control"/>
     </div>
 </div>
 
@@ -100,7 +99,7 @@
     [Parameter, EditorRequired] public EmployeeModel ModifiedEmployee { get; set; } = default!;
 
     private StatusMessageData? _statusMessageData;
-    
+
     private decimal _newSalary;
     private string _newFirstName = default!;
     private string? _newSecondName;
@@ -109,17 +108,17 @@
     private string _newPassword = default!;
     private string _newPosition = default!;
     private PermissionsModel _newPermissions = default!;
-    
+
     protected override void OnParametersSet()
     {
         _statusMessageData = null;
-        
+
         _newFirstName = ModifiedEmployee.FirstName;
         _newSecondName = ModifiedEmployee.SecondName;
         _newLastName = ModifiedEmployee.LastName;
         _newLogin = ModifiedEmployee.Login;
         _newPassword = string.Empty;
-        
+
         _newSalary = ModifiedEmployee.Position.Salary;
         _newPosition = ModifiedEmployee.Position.Name;
         _newPermissions = ModifiedEmployee.Position.Permissions;
@@ -133,22 +132,27 @@
         }
 
         var position = new PositionModel(ModifiedEmployee.Position.Id, _newPosition, _newSalary, _newPermissions);
-        var result = new EmployeeModel(ModifiedEmployee.Id, _newFirstName, _newSecondName, _newLastName, _newLogin, 
+        var result = new EmployeeModel(ModifiedEmployee.Id, _newFirstName, _newSecondName, _newLastName, _newLogin,
             _newPassword, position);
 
         return ModifyEmployeeCallback.InvokeAsync(result);
     }
-    
+
     private bool ValidateModification()
     {
         _statusMessageData = null;
-        
-        var invalidProperties = string.IsNullOrEmpty(_newFirstName) || 
-                               string.IsNullOrEmpty(_newLastName) || 
-                               string.IsNullOrEmpty(_newLogin) ||
-                               string.IsNullOrEmpty(_newPosition) ||
-                               string.IsNullOrEmpty(_newPassword) || 
-                               _newSalary <= 0;
+
+        var invalidProperties = string.IsNullOrEmpty(_newFirstName) ||
+                                string.IsNullOrEmpty(_newLastName) ||
+                                string.IsNullOrEmpty(_newLogin) ||
+                                string.IsNullOrEmpty(_newPosition) ||
+                                string.IsNullOrEmpty(_newPassword) ||
+                                _newLogin.Length > 40 ||
+                                _newFirstName.Length > 40 ||
+                                _newSecondName?.Length > 40 ||
+                                _newLastName.Length > 40 ||
+                                _newPosition.Length > 40 ||
+                                _newSalary is <= 0 or >= 10e7m;
 
         var nothingChanged = _newFirstName == ModifiedEmployee.FirstName &&
                              _newSecondName == ModifiedEmployee.SecondName &&
@@ -158,7 +162,7 @@
                              _newPosition == ModifiedEmployee.Position.Name &&
                              _newSalary == ModifiedEmployee.Position.Salary &&
                              _newPassword == string.Empty;
-        
+
         if (invalidProperties)
         {
             _statusMessageData = new StatusMessageData("Niepoprawne dane pracownika", StatusMessageType.Error);
@@ -170,7 +174,8 @@
             _statusMessageData = new StatusMessageData("Brak wprowadzonych zmian", StatusMessageType.Info);
             return false;
         }
-        
+
         return true;
     }
+
 }

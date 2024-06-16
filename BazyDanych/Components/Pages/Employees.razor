@@ -9,7 +9,6 @@
 <PageTitle>Zarządzanie pracownikami</PageTitle>
 
 <Modal @ref="_modal"/>
-<ConfirmDialog @ref="_dialog"/>
 
 <h3>Zarządzanie pracownikami</h3>
 
@@ -30,7 +29,6 @@ else
         <table class="table employees-table">
             <thead>
             <tr>
-                <th/>
                 <th>Imię</th>
                 <th>Drugie imię</th>
                 <th>Nazwisko</th>
@@ -44,11 +42,6 @@ else
             @foreach (var employee in _employees)
             {
                 <tr @onclick="() => EditEmployee(employee)">
-                    <td @onclick="() => DeleteEmployee(employee)" @onclick:stopPropagation="true">
-                        <div class="delete-icon">
-                            <Icon Name="IconName.Trash" Color="IconColor.Danger" Size="IconSize.x5"></Icon>
-                        </div>
-                    </td>
                     <td>@employee.FirstName</td>
                     <td>@(employee.SecondName ?? "-")</td>
                     <td>@employee.LastName</td>
@@ -71,16 +64,6 @@ else
     private Modal _modal = default!;
     private Dictionary<string, object> _editModalParameters = default!;
     private Dictionary<string, object> _createModalParameters = default!;
-
-    private ConfirmDialog _dialog = default!;
-    private readonly ConfirmDialogOptions _dialogOptions = new()
-    {
-        YesButtonText = "Tak",
-        YesButtonColor = ButtonColor.Danger,
-        NoButtonText = "Anuluj",
-        NoButtonColor = ButtonColor.Secondary,
-        AutoFocusYesButton = false
-    };
     
     private IEnumerable<EmployeeModel>? _employees;
     
@@ -122,19 +105,6 @@ else
         modifiedEmployee.SecondName = employee.SecondName;
         modifiedEmployee.LastName = employee.LastName;
         modifiedEmployee.Position = employee.Position;
-    }
-
-    private async Task DeleteEmployee(EmployeeModel employee)
-    {
-        var confirmation = await _dialog.ShowAsync(
-            title: "Usuń produkt",
-            message1: $"Usunięcie pracownika {employee.FullName} z bazy danych jest nieodwracalne.",
-            message2: "Czy na pewno chcesz kontynuować?",
-            confirmDialogOptions: _dialogOptions);
-
-        if (!confirmation) return;
-        
-        _employees = _employees?.Where(x => x.Id != employee.Id);
     }
 
     private Task AddEmployee()
